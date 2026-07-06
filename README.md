@@ -1,8 +1,8 @@
 # PMV4 Analytics
 
-PMV4 Analytics is a Streamlit-based machine learning dashboard for exploring manufacturing-style process data and benchmark classification datasets. The current app combines data understanding, clustering, decision tree modeling, probabilistic decision tree views, and optional AI-assisted analysis of tree structures.
+PMV4 Analytics is a Streamlit-based machine learning dashboard for exploring manufacturing-style process data and benchmark classification datasets. The app combines data understanding, clustering, decision tree modeling, probabilistic decision tree views, and optional AI-assisted analysis of tree structures.
 
-This repository is currently being cleaned up in phases. Phase 1 preserves the existing functionality and records a known baseline before deeper refactoring.
+The project is being developed as a portfolio-grade ML application with reproducible setup, automated baseline checks, structured model workflows, and deployment-ready documentation.
 
 ## Current App Entry Point
 
@@ -67,17 +67,22 @@ gemini = "your-api-key"
 
 For local development, place this in `.streamlit/secrets.toml`. That file is intentionally ignored by Git.
 
-## Baseline Verification
+## Quality Checks
 
-Current Phase 1 checks:
+Run the baseline verification suite before changing model, data, or Streamlit workflow code:
 
 ```bash
-python3 -m compileall -q .
-python3 -c "import app; print('app import OK')"
-python3 -c "import main; print('main import OK')"
+python3 -m compileall -q *.py clustering streamlit_flow tests ML_Dash_files
+UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
 ```
 
-Known baseline observations:
+Manual Streamlit verification:
+
+```bash
+streamlit run main.py
+```
+
+Current engineering observations:
 
 - `main.py` is the real full app entry point.
 - `app.py` imports successfully and appears to be a smaller legacy version.
@@ -86,21 +91,13 @@ Known baseline observations:
 - Matplotlib may warn about cache directories when the home cache path is not writable.
 - A real Streamlit browser session is still the best way to verify every tab and interaction.
 
-## Cleanup Plan
+## Development Roadmap
 
-The cleanup will be done in phases to keep the application working throughout:
+The application will evolve in focused phases to keep functionality stable while improving engineering quality:
 
-1. Establish a documented safety baseline.
+1. Establish automated baseline verification.
 2. Organize datasets, models, generated outputs, and project assets.
 3. Modularize the app without changing behavior.
 4. Add tests for data processing, modeling helpers, and smoke imports.
 5. Polish the UI and project presentation.
 6. Deploy the Streamlit app from the cleaned GitHub repository.
-
-## Phase 1 Commit
-
-Suggested commit message:
-
-```text
-chore: establish project baseline and documentation
-```
