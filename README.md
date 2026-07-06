@@ -6,7 +6,13 @@ The project is being developed as a portfolio-grade ML application with reproduc
 
 ## Current App Entry Point
 
-The primary Streamlit app is:
+The preferred Streamlit app entry point is:
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+The original top-level entry point is still supported during the incremental modularization:
 
 ```bash
 streamlit run main.py
@@ -27,6 +33,9 @@ There is also an older/smaller Streamlit app in `app.py`, plus a Dash prototype 
 ## Project Contents
 
 - `main.py` - primary Streamlit dashboard.
+- `app/streamlit_app.py` - deployment-friendly Streamlit entry point.
+- `src/` - package structure for modularized data, model, service, and visualization code.
+- `docs/` - project architecture and methodology documentation.
 - `app.py` - smaller legacy Streamlit dashboard.
 - `*_PDT.py` - probabilistic decision tree model helpers for each dataset.
 - `*_viz.py` - Streamlit visualization flows for dataset-specific probabilistic decision trees.
@@ -44,14 +53,14 @@ Recommended local setup:
 
 ```bash
 uv sync
-uv run streamlit run main.py
+uv run streamlit run app/streamlit_app.py
 ```
 
 Fallback setup:
 
 ```bash
 python3 -m pip install -r requirements.txt
-python3 -m streamlit run main.py
+python3 -m streamlit run app/streamlit_app.py
 ```
 
 System package note: `packages.txt` currently declares `graphviz`, which is needed by Graphviz-related tree visualization workflows in deployed environments.
@@ -79,7 +88,7 @@ UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
 Manual Streamlit verification:
 
 ```bash
-streamlit run main.py
+streamlit run app/streamlit_app.py
 ```
 
 Current engineering observations:
