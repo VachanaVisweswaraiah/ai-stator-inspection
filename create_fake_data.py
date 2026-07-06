@@ -35,7 +35,9 @@ def create_fake_dataset():
     fake_dataset = generate_dataset(num_rows, data_model)
     return fake_dataset
 
-fake_data = create_fake_dataset()
+
+if __name__ == "__main__":
+    fake_data = create_fake_dataset()
 # path = os.path.join(os.path.expanduser('~'),'Downloads')
 # file_path = os.path.join(path, 'fake_data.csv')
 # fake_data.to_csv(file_path, index=False)

@@ -55,4 +55,5 @@ def count_yes_no():
     return df_1,count_yes, count_no
 
 
-compute_fit()
+if __name__ == "__main__":
+    compute_fit()

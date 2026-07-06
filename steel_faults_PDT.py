@@ -84,4 +84,6 @@ def Probabilistic_Decision_Tree_Steel_Faults(depth):
 
     return preci_value, recall_value, accuracy_value, classification_report_val, confusion_matrix_test, dtc, feature_names
 
-Probabilistic_Decision_Tree_Steel_Faults(20)
+
+if __name__ == "__main__":
+    Probabilistic_Decision_Tree_Steel_Faults(20)

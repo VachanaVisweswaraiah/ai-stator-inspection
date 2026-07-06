@@ -87,7 +87,7 @@ Current engineering observations:
 - `main.py` is the real full app entry point.
 - `app.py` imports successfully and appears to be a smaller legacy version.
 - `main.py` imports successfully once declared dependencies are installed.
-- Importing `main.py` currently triggers model/data work from imported modules, including steel-fault model training output.
+- Model training and data generation are isolated behind function calls instead of running during module import.
 - Matplotlib may warn about cache directories when the home cache path is not writable.
 - A real Streamlit browser session is still the best way to verify every tab and interaction.
 
