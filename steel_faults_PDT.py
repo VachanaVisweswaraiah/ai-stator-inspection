@@ -6,10 +6,11 @@ from sklearn.metrics import confusion_matrix, accuracy_score, classification_rep
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn import tree
 import joblib
+from src.config.paths import STEEL_FAULTS_DATA_PATH, STEEL_FAULTS_PROBABILISTIC_MODEL_PATH
 
 
 def df_fitting_and_evaluation_steel_faults():
-    df = pd.read_csv("steel_faults_with_labels.csv")
+    df = pd.read_csv(STEEL_FAULTS_DATA_PATH)
     return df
 
 
@@ -59,7 +60,7 @@ def Probabilistic_Decision_Tree_Steel_Faults(depth):
     dtc.fit(x_main, y_main)
 
     # Save the model
-    joblib.dump(dtc, 'probabilistic_decision_tree_model_Steel_Faults.joblib')
+    joblib.dump(dtc, STEEL_FAULTS_PROBABILISTIC_MODEL_PATH)
 
     # Instead of normal predict, use predict_proba + argmax to simulate probabilistic prediction
     y_proba_val = dtc.predict_proba(x_val)

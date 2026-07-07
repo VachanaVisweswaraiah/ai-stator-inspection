@@ -6,10 +6,11 @@ from sklearn.metrics import confusion_matrix, accuracy_score, classification_rep
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn import tree
 import joblib
+from src.config.paths import DECISION_TREE_MODEL_PATH, FAKE_DATA_PATH
 
 
 def df_fitting_and_evaluation():
-    df = pd.read_excel("fake_data.xlsx")
+    df = pd.read_excel(FAKE_DATA_PATH)
     df["fitting_distance"] = df["box_hole_diameter"] - df["cylinder_diameter"]
     # Using & instead of 'and'
     condition1 = (df["fitting_distance"] <= 1) & (df["fitting_distance"] >= -1)
@@ -68,7 +69,7 @@ def Decision_Tress(depth):
     dtc.fit(x_main, y_main)
 
     # Save the model
-    joblib.dump(dtc, 'decision_tree_model.joblib')
+    joblib.dump(dtc, DECISION_TREE_MODEL_PATH)
     # Convert class names to strings
     # class_names = df['evaluation_encoded'].unique().astype(str)
 

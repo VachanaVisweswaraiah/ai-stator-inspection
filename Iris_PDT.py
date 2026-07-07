@@ -6,10 +6,11 @@ from sklearn.metrics import confusion_matrix, accuracy_score, classification_rep
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn import tree
 import joblib
+from src.config.paths import IRIS_DATA_PATH, IRIS_PROBABILISTIC_MODEL_PATH
 
 
 def df_fitting_and_evaluation_iris():
-    df = pd.read_csv("Iris.csv")
+    df = pd.read_csv(IRIS_DATA_PATH)
     return df
 
 
@@ -56,7 +57,7 @@ def Probabilistic_Decision_Tree_Iris(depth):
     dtc.fit(x_main, y_main)
 
     # Save the model
-    joblib.dump(dtc, 'probabilistic_decision_tree_model_Iris.joblib')
+    joblib.dump(dtc, IRIS_PROBABILISTIC_MODEL_PATH)
 
     # Instead of normal predict, use predict_proba + argmax to simulate probabilistic prediction
     y_proba_val = dtc.predict_proba(x_val)

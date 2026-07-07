@@ -2,11 +2,12 @@ import streamlit as st
 import pandas as pd
 from data_model import data_model as hairpin_data_model, data_model
 from create_fake_data import create_fake_dataset
+from src.config.paths import FAKE_DATA_PATH
 import os
 
 
 def compute_fit():
-    df = pd.read_excel("fake_data.xlsx")
+    df = pd.read_excel(FAKE_DATA_PATH)
     box_hole_diameter_error_allowance = 2
     box_hole_depth_error_allowance = 3
     cylinder_diameter_error_allowance = 1.5

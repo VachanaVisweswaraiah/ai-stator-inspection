@@ -6,10 +6,11 @@ from sklearn.metrics import confusion_matrix, accuracy_score, classification_rep
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn import tree
 import joblib
+from src.config.paths import VW_SAMPLE_DATA_PATH, VW_SAMPLE_PROBABILISTIC_MODEL_PATH
 
 
 def df_fitting_and_evaluation_vw_sample():
-    df = pd.read_csv("Analysis_Data_augmented_csv.csv", sep=';',decimal=',',on_bad_lines='skip')
+    df = pd.read_csv(VW_SAMPLE_DATA_PATH, sep=';',decimal=',',on_bad_lines='skip')
     return df
 
 
@@ -69,7 +70,7 @@ def Probabilistic_Decision_Tree_VW_Sample(depth,selected_to_drop):
     dtc.fit(x_main, y_main)
 
     # Save the model
-    joblib.dump(dtc, 'probabilistic_decision_tree_model_VW_Sample.joblib')
+    joblib.dump(dtc, VW_SAMPLE_PROBABILISTIC_MODEL_PATH)
 
     # Instead of normal predict, use predict_proba + argmax to simulate probabilistic prediction
     y_proba_val = dtc.predict_proba(x_val)
