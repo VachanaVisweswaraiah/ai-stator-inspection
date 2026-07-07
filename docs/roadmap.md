@@ -13,6 +13,7 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 7. Documented reproducible local setup and dependency expectations.
 8. Added GitHub Actions CI for automated quality checks.
 9. Documented model artifact governance and refresh criteria.
+10. Prepared Streamlit Cloud deployment settings and documentation.
 
 ## Remaining Work
 
@@ -22,6 +23,6 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 - Split the large Streamlit app into smaller page/controller modules.
 - Add focused tests for modeling outputs and key Streamlit data transformations.
 - Improve UI consistency after the internal structure is stable.
-- Configure Streamlit deployment from `app/streamlit_app.py`.
+- Create the Streamlit Cloud app from `app/streamlit_app.py` and add the optional AI secret in the hosted app settings.
 
 Each phase should stay small enough to review, run the verification suite, and commit independently.

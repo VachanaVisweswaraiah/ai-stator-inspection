@@ -56,6 +56,8 @@ streamlit run app/streamlit_app.py
 
 The Graphviz system package is declared in `packages.txt` for tree visualization workflows.
 
+See `docs/deployment.md` for the Streamlit Cloud settings and pre-deployment checklist.
+
 ## Secrets
 
 The optional AI analysis feature expects this Streamlit secret:

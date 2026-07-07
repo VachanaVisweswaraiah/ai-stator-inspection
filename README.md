@@ -73,7 +73,17 @@ python3 -m streamlit run app/streamlit_app.py
 
 System package note: `packages.txt` currently declares `graphviz`, which is needed by Graphviz-related tree visualization workflows in deployed environments.
 
-For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`. For model artifact refresh policy, see `docs/model_artifacts.md`. For the phased cleanup plan, see `docs/roadmap.md`.
+For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`. For deployment instructions, see `docs/deployment.md`. For model artifact refresh policy, see `docs/model_artifacts.md`. For the phased cleanup plan, see `docs/roadmap.md`.
+
+## Deployment
+
+The deployment-ready entry point is:
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+Streamlit Cloud should use `main` as the branch and `app/streamlit_app.py` as the main file path. System packages are listed in `packages.txt`, and Streamlit defaults are committed in `.streamlit/config.toml`.
 
 ## Secrets
 
