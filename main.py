@@ -17,6 +17,15 @@ from Iris_PDT import Probabilistic_Decision_Tree_Iris, df_fitting_and_evaluation
 from steel_faults_PDT import Probabilistic_Decision_Tree_Steel_Faults, df_fitting_and_evaluation_steel_faults
 from vw_sample_data_PDT import Probabilistic_Decision_Tree_VW_Sample, df_fitting_and_evaluation_vw_sample
 import joblib
+from src.config.paths import (
+    DECISION_TREE_MODEL_PATH,
+    ENGINEERING_DATA_PATH,
+    FAKE_DATA_PATH,
+    PDT_PREDICTED_DATA_PATH,
+    PREDICTED_DATA_PATH,
+    PROBABILISTIC_DECISION_TREE_MODEL_PATH,
+    VW_SAMPLE_DATA_PATH,
+)
 import streamlit_flow
 from streamlit_flow import streamlit_flow
 from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
@@ -52,17 +61,17 @@ def color_code2(val):
     return f'background-color: {color}'
 
 def actual_target_values():
-    df = pd.read_excel("fake_data.xlsx")
+    df = pd.read_excel(FAKE_DATA_PATH)
 
 def df_fitting_and_evaluation():
-    df = pd.read_excel("fake_data.xlsx")
+    df = pd.read_excel(FAKE_DATA_PATH)
     df["fitting_distance"] = df["box_hole_diameter"] - df["cylinder_diameter"]
 
     # Using & instead of 'and'
     condition1 = (df["fitting_distance"] <= 1) & (df["fitting_distance"] >= -1)
     condition2 = (df["fitting_distance"] > 1)
     # condition3 = (df["bed_distance"])
-    predicted_df = pd.read_excel("predicted_data.xlsx")
+    predicted_df = pd.read_excel(PREDICTED_DATA_PATH)
     predicted_df.index = df.index
     df['Prediction'] = predicted_df['Prediction']
     # Assigning values based on conditions
@@ -80,14 +89,14 @@ def df_fitting_and_evaluation():
     return df, styled_df
 
 def df_fitting_and_evaluation_PDT():
-    df = pd.read_excel("fake_data.xlsx")
+    df = pd.read_excel(FAKE_DATA_PATH)
     df["fitting_distance"] = df["box_hole_diameter"] - df["cylinder_diameter"]
 
     # Using & instead of 'and'
     condition1 = (df["fitting_distance"] <= 1) & (df["fitting_distance"] >= -1)
     condition2 = (df["fitting_distance"] > 1)
     # condition3 = (df["bed_distance"])
-    predicted_df = pd.read_excel("PDT_predicted_data.xlsx")
+    predicted_df = pd.read_excel(PDT_PREDICTED_DATA_PATH)
     predicted_df.index = df.index
     df['Prediction'] = predicted_df['Prediction']
     # Assigning values based on conditions
@@ -263,7 +272,7 @@ def scatter_plot():
 
 
 def box_plot():
-    df = pd.read_excel("fake_data.xlsx")
+    df = pd.read_excel(FAKE_DATA_PATH)
     fig = go.Figure()
     for column in df.columns[1:]:
         fig.add_trace(go.Box(y=df[column], name=column))
@@ -292,14 +301,14 @@ def kmeans_info_popover():
 def kmeans():
     sections = {'Clusters 4 Operators': 'section-1'}
 
-    fake_data = pd.read_excel("fake_data.xlsx")
+    fake_data = pd.read_excel(FAKE_DATA_PATH)
     if "engineering_df" not in st.session_state:
-        engineering_df = pd.read_excel("Engineering_data.xlsx")
+        engineering_df = pd.read_excel(ENGINEERING_DATA_PATH)
         st.session_state["engineering_df"] = engineering_df
         # st.write(fake_data)
 
     st.header("Cluster Analysis", anchor=sections['Clusters 4 Operators'])
-    df = pd.read_excel("fake_data.xlsx")
+    df = pd.read_excel(FAKE_DATA_PATH)
     with st.popover("Number of Clusters"):
         automatic_clusters = st.checkbox("Automatic", False)
         if automatic_clusters:
@@ -322,7 +331,7 @@ def kmeans():
         center_df = pd.DataFrame(cluster_centers, columns=cluster_columns)
         cluster_names = [f'Cluster {i}' for i in range(optimal_k)]
         center_df['Name'] = cluster_names
-        engineering_df = pd.read_excel("Engineering_data.xlsx")  # check df session control
+        engineering_df = pd.read_excel(ENGINEERING_DATA_PATH)  # check df session control
         cluster_df = center_df
 
         st.subheader('Cluster Centers', anchor='cluster-centers')
@@ -2262,12 +2271,12 @@ def probabilistic_decision_tree_viz(depth):
 
 def load_model():
     # Load the saved decision tree model
-    decision_tree_model = joblib.load('decision_tree_model.joblib')
+    decision_tree_model = joblib.load(DECISION_TREE_MODEL_PATH)
     return decision_tree_model
 
 def load_model_pdt():
     # Load the saved decision tree model
-    probabilistic_decision_tree_model = joblib.load('probabilistic_decision_tree_model.joblib')
+    probabilistic_decision_tree_model = joblib.load(PROBABILISTIC_DECISION_TREE_MODEL_PATH)
     return probabilistic_decision_tree_model
 
 def predict_input(df_input_val):
@@ -2405,7 +2414,7 @@ def main():
         main_df.drop(columns=['fitting_distance','Prediction', 'Evaluation','fitting_group'], inplace=True)
         st.dataframe(main_df, hide_index=True, width=1250)
         st.header('Box-Cylinder Model Range ')
-        df_engineering_data_from_xlsx = pd.read_excel('Engineering_data.xlsx')
+        df_engineering_data_from_xlsx = pd.read_excel(ENGINEERING_DATA_PATH)
         st.dataframe(df_engineering_data_from_xlsx, hide_index=True)
         tab1, tab2 = st.tabs(["Box-Plot", "Scatter-Plot"])
         with tab1:
@@ -2459,7 +2468,7 @@ def main():
         steel_faults_probabilistic_decision_tree_viz(depth)
     
     elif selected_section == 'Volkswagen PDT':
-        df_actual = pd.read_csv("Analysis_Data_augmented_csv.csv", sep=';',decimal=',',on_bad_lines='skip')
+        df_actual = pd.read_csv(VW_SAMPLE_DATA_PATH, sep=';',decimal=',',on_bad_lines='skip')
         df_actual = df_actual.drop(columns=['pin_position','stator_id','ProduktID', 'Pinbezeichnung','left_pin_id', 'right_pin_id','Drahtprüfung_Ergebnis_x', 'Pin_ID_x','Dachbiegen_Ergebnis_x', 'Pin_Type_x', '3D_Biegen_Ergebnis_x',
        'Abisolieren_eval_x', 'Drahtprüfung_Ergebnis_y', 'Pin_ID_y',
        'Dachbiegen_Ergebnis_y', 'Pin_Type_y', '3D_Biegen_Ergebnis_y', 'Ergebnis'])

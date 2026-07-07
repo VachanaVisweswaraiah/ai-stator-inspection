@@ -21,3 +21,5 @@ The migration is intentionally incremental so that each refactor can be tested w
 ## Path Handling
 
 Project files are resolved through `src/config/paths.py` instead of relying on the current working directory. This keeps scripts and the Streamlit deployment entry point aligned while preserving the existing data files and model artifacts in their current locations.
+
+Runtime modules should import named constants from `src.config.paths` for repository-owned datasets and model artifacts. User-uploaded files remain handled directly by Streamlit because those paths are supplied at runtime.

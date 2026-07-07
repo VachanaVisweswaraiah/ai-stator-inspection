@@ -15,6 +15,7 @@ from Decision_Tress import Decision_Tress
 from Probabilistic_DT import Probabilistic_Decision_Tree
 from steel_faults_PDT import Probabilistic_Decision_Tree_Steel_Faults, df_fitting_and_evaluation_steel_faults
 import joblib
+from src.config.paths import STEEL_FAULTS_PROBABILISTIC_MODEL_PATH
 import streamlit_flow
 from streamlit_flow import streamlit_flow
 from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
@@ -36,7 +37,7 @@ def rename_dataframe_columns(df):
 
 def load_model_steel_faults_pdt():
     # Load the saved decision tree model
-    steel_faults_probabilistic_decision_tree_model = joblib.load('probabilistic_decision_tree_model_Steel_Faults.joblib')
+    steel_faults_probabilistic_decision_tree_model = joblib.load(STEEL_FAULTS_PROBABILISTIC_MODEL_PATH)
     return steel_faults_probabilistic_decision_tree_model
 
 def predict_input_pdt(df_input_val):
