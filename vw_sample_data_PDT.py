@@ -6,11 +6,12 @@ from sklearn.metrics import confusion_matrix, accuracy_score, classification_rep
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn import tree
 import joblib
-from src.config.paths import VW_SAMPLE_DATA_PATH, VW_SAMPLE_PROBABILISTIC_MODEL_PATH
+from src.config.paths import VW_SAMPLE_PROBABILISTIC_MODEL_PATH
+from src.data.loaders import load_vw_sample_data
 
 
 def df_fitting_and_evaluation_vw_sample():
-    df = pd.read_csv(VW_SAMPLE_DATA_PATH, sep=';',decimal=',',on_bad_lines='skip')
+    df = load_vw_sample_data()
     return df
 
 

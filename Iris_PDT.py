@@ -6,11 +6,12 @@ from sklearn.metrics import confusion_matrix, accuracy_score, classification_rep
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn import tree
 import joblib
-from src.config.paths import IRIS_DATA_PATH, IRIS_PROBABILISTIC_MODEL_PATH
+from src.config.paths import IRIS_PROBABILISTIC_MODEL_PATH
+from src.data.loaders import load_iris_data
 
 
 def df_fitting_and_evaluation_iris():
-    df = pd.read_csv(IRIS_DATA_PATH)
+    df = load_iris_data()
     return df
 
 

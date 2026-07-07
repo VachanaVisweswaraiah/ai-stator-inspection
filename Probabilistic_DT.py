@@ -6,11 +6,12 @@ from sklearn.metrics import confusion_matrix, accuracy_score, classification_rep
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn import tree
 import joblib
-from src.config.paths import FAKE_DATA_PATH, PROBABILISTIC_DECISION_TREE_MODEL_PATH
+from src.config.paths import PROBABILISTIC_DECISION_TREE_MODEL_PATH
+from src.data.loaders import load_fake_data
 
 
 def df_fitting_and_evaluation():
-    df = pd.read_excel(FAKE_DATA_PATH)
+    df = load_fake_data()
     df["fitting_distance"] = df["box_hole_diameter"] - df["cylinder_diameter"]
     # Using & instead of 'and'
     condition1 = (df["fitting_distance"] <= 1) & (df["fitting_distance"] >= -1)

@@ -14,8 +14,8 @@ from clustering.k_means import perform_kmeans
 from Decision_Tress import Decision_Tress
 from Probabilistic_DT import Probabilistic_Decision_Tree
 from vw_sample_data_PDT import Probabilistic_Decision_Tree_VW_Sample, df_fitting_and_evaluation_vw_sample
-import joblib
-from src.config.paths import VW_SAMPLE_DATA_PATH, VW_SAMPLE_PROBABILISTIC_MODEL_PATH
+from src.data.loaders import load_vw_sample_data
+from src.models.artifacts import load_vw_sample_probabilistic_model
 import streamlit_flow
 from streamlit_flow import streamlit_flow
 from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
@@ -38,7 +38,7 @@ def rename_dataframe_columns(df):
 
 def load_model_vw_sample_pdt():
     # Load the saved decision tree model
-    vw_sample_probabilistic_decision_tree_model = joblib.load(VW_SAMPLE_PROBABILISTIC_MODEL_PATH)
+    vw_sample_probabilistic_decision_tree_model = load_vw_sample_probabilistic_model()
     return vw_sample_probabilistic_decision_tree_model
 
 def predict_input_pdt(df_input_val):
@@ -58,7 +58,7 @@ def display_prediction(predictions):
     st.markdown(f' <p  style="color:{color};font-size:20px;">{predict}{predictions_val}</p>', unsafe_allow_html=True)
 
 def get_table_download_link():
-    df_full = pd.read_csv(VW_SAMPLE_DATA_PATH, sep=';',decimal=',',on_bad_lines='skip')
+    df_full = load_vw_sample_data()
     # Keep rows with at least 80% non-null values
     threshold = int(0.8 * df_full.shape[1])
     df_clean = df_full.dropna(thresh=threshold)

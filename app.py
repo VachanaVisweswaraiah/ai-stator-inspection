@@ -7,7 +7,7 @@ from data_model import data_model
 from create_fake_data import create_fake_dataset
 from Compute_fit import compute_fit, count_yes_no
 from k_means import perform_kmeans
-from src.config.paths import ENGINEERED_CLUSTER_DATA_PATH
+from src.data.loaders import load_engineered_cluster_data
 
 st.set_page_config(layout="wide")
 
@@ -184,7 +184,7 @@ def kmeans():
 
     fake_data = df_return()
     if "engineering_df" not in st.session_state:
-        engineering_df = pd.read_excel(ENGINEERED_CLUSTER_DATA_PATH)
+        engineering_df = load_engineered_cluster_data()
         st.session_state["engineering_df"] = engineering_df
         st.write(fake_data)
 
@@ -227,7 +227,7 @@ def kmeans():
     center_df = pd.DataFrame(cluster_centers, columns=cluster_columns)
     cluster_names = [f'Cluster {i}' for i in range(optimal_k)]
     center_df['Name'] = cluster_names
-    engineering_df = pd.read_excel(ENGINEERED_CLUSTER_DATA_PATH)  # check df session control
+    engineering_df = load_engineered_cluster_data()  # check df session control
     cluster_df = center_df
 
     st.subheader('Cluster Centers', anchor='cluster-centers')

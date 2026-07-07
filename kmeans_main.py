@@ -6,13 +6,13 @@ from data_model import data_model as box_data_model
 from clustering.k_means import perform_kmeans
 import plotly.express as px
 import plotly.graph_objects as go
-from src.config.paths import ENGINEERING_DATA_PATH, FAKE_DATA_PATH
+from src.data.loaders import load_engineering_data, load_fake_data
 
 st.set_page_config(layout="wide")
 
 def kmeans_main():
     def df_return():
-        df = pd.read_excel(FAKE_DATA_PATH)
+        df = load_fake_data()
         return df
 
 
@@ -28,7 +28,7 @@ def kmeans_main():
 
     fake_data = df_return()
     if "engineering_df" not in st.session_state:
-        engineering_df = pd.read_excel(ENGINEERING_DATA_PATH)
+        engineering_df = load_engineering_data()
         st.session_state["engineering_df"] = engineering_df
         st.write(fake_data)
 
@@ -48,7 +48,7 @@ def kmeans_main():
     center_df = pd.DataFrame(cluster_centers, columns=cluster_columns)
     cluster_names = [f'Cluster {i}' for i in range(optimal_k)]
     center_df['Name'] = cluster_names
-    engineering_df = pd.read_excel(ENGINEERING_DATA_PATH)  # check df session control
+    engineering_df = load_engineering_data()  # check df session control
     cluster_df = center_df
 
     st.subheader('Cluster Centers', anchor='cluster-centers')

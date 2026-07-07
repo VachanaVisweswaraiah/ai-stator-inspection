@@ -10,9 +10,9 @@ PMV4 Analytics is organized around a Streamlit application layer and a gradually
 ## Target Module Boundaries
 
 - `src/config/` contains shared project paths and will hold future configuration.
-- `src/data/` will contain dataset loading and validation utilities.
+- `src/data/` contains dataset loading utilities and will hold future validation.
 - `src/features/` will contain feature engineering and preprocessing logic.
-- `src/models/` will contain decision tree, probabilistic tree, and clustering workflows.
+- `src/models/` contains model artifact loading utilities and will contain decision tree, probabilistic tree, and clustering workflows.
 - `src/visualization/` will contain Plotly and tree visualization helpers.
 - `src/services/` will contain external service integrations, including AI-assisted analysis.
 
@@ -22,4 +22,4 @@ The migration is intentionally incremental so that each refactor can be tested w
 
 Project files are resolved through `src/config/paths.py` instead of relying on the current working directory. This keeps scripts and the Streamlit deployment entry point aligned while preserving the existing data files and model artifacts in their current locations.
 
-Runtime modules should import named constants from `src.config.paths` for repository-owned datasets and model artifacts. User-uploaded files remain handled directly by Streamlit because those paths are supplied at runtime.
+Runtime modules should use `src.data.loaders` for repository-owned datasets and `src.models.artifacts` for saved model artifacts. User-uploaded files remain handled directly by Streamlit because those paths are supplied at runtime.

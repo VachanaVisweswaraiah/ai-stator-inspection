@@ -6,11 +6,12 @@ from sklearn.metrics import confusion_matrix, accuracy_score, classification_rep
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn import tree
 import joblib
-from src.config.paths import STEEL_FAULTS_DATA_PATH, STEEL_FAULTS_PROBABILISTIC_MODEL_PATH
+from src.config.paths import STEEL_FAULTS_PROBABILISTIC_MODEL_PATH
+from src.data.loaders import load_steel_faults_data
 
 
 def df_fitting_and_evaluation_steel_faults():
-    df = pd.read_csv(STEEL_FAULTS_DATA_PATH)
+    df = load_steel_faults_data()
     return df
 
 
