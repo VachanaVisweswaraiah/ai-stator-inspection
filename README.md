@@ -73,7 +73,7 @@ python3 -m streamlit run app/streamlit_app.py
 
 System package note: `packages.txt` currently declares `graphviz`, which is needed by Graphviz-related tree visualization workflows in deployed environments.
 
-For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`. For the phased cleanup plan, see `docs/roadmap.md`.
+For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`. For model artifact refresh policy, see `docs/model_artifacts.md`. For the phased cleanup plan, see `docs/roadmap.md`.
 
 ## Secrets
 

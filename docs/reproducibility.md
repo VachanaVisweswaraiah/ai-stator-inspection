@@ -74,3 +74,5 @@ The repository includes pre-trained `.joblib` model artifacts so the app can mak
 Current verification loads these artifacts successfully with the locked runtime. During tests, scikit-learn may warn that some artifacts were serialized with `scikit-learn 1.4.1.post1` and are being loaded by the current runtime version. This is documented technical debt rather than a current app failure.
 
 Future model-refresh work should retrain and reserialize all committed model artifacts with the active locked scikit-learn version, then update the verification suite against the refreshed artifacts.
+
+See `docs/model_artifacts.md` for the current artifact registry and refresh policy.
