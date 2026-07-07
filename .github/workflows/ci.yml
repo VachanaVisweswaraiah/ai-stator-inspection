@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality:
+    name: Quality checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Verify lockfile
+        run: uv lock --check
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Run tests
+        run: UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
+
+      - name: Compile Python modules
+        run: uv run python -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files

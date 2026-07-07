@@ -37,6 +37,15 @@ UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
 python3 -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files
 ```
 
+## Continuous Integration
+
+GitHub Actions runs the same baseline checks on pushes to `main` and on pull requests:
+
+- `uv lock --check`
+- `uv sync --locked`
+- `UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest`
+- `uv run python -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files`
+
 ## Deployment Setup
 
 Streamlit deployments can install from `requirements.txt` and use this launch command:

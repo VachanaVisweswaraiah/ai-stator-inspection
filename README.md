@@ -4,6 +4,8 @@ PMV4 Analytics is a Streamlit-based machine learning dashboard for exploring man
 
 The project is being developed as a portfolio-grade ML application with reproducible setup, automated baseline checks, structured model workflows, and deployment-ready documentation.
 
+Automated quality checks run through GitHub Actions on pushes and pull requests.
+
 ## Current App Entry Point
 
 The preferred Streamlit app entry point is:
@@ -71,7 +73,7 @@ python3 -m streamlit run app/streamlit_app.py
 
 System package note: `packages.txt` currently declares `graphviz`, which is needed by Graphviz-related tree visualization workflows in deployed environments.
 
-For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`.
+For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`. For the phased cleanup plan, see `docs/roadmap.md`.
 
 ## Secrets
 
@@ -98,6 +100,8 @@ Manual Streamlit verification:
 ```bash
 streamlit run app/streamlit_app.py
 ```
+
+The same baseline is also enforced in `.github/workflows/ci.yml`.
 
 Current engineering observations:
 
