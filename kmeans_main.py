@@ -1,12 +1,11 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from create_fake_data import create_fake_dataset
-from data_model import data_model as box_data_model
-from clustering.k_means import perform_kmeans
 import plotly.express as px
 import plotly.graph_objects as go
 from src.data.loaders import load_engineering_data, load_fake_data
+from src.features.clustering import perform_kmeans
+from src.features.engineering import create_fake_dataset, data_model as box_data_model
 
 st.set_page_config(layout="wide")
 

@@ -3,11 +3,9 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
-from data_model import data_model
-from create_fake_data import create_fake_dataset
-from Compute_fit import compute_fit, count_yes_no
-from k_means import perform_kmeans
 from src.data.loaders import load_engineered_cluster_data
+from src.features.clustering import perform_kmeans
+from src.features.engineering import compute_fit, count_yes_no, create_fake_dataset, data_model
 
 st.set_page_config(layout="wide")
 
