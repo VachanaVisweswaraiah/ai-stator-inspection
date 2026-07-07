@@ -56,6 +56,12 @@ uv sync
 uv run streamlit run app/streamlit_app.py
 ```
 
+Run tests from the locked environment:
+
+```bash
+UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
+```
+
 Fallback setup:
 
 ```bash
@@ -64,6 +70,8 @@ python3 -m streamlit run app/streamlit_app.py
 ```
 
 System package note: `packages.txt` currently declares `graphviz`, which is needed by Graphviz-related tree visualization workflows in deployed environments.
+
+For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`.
 
 ## Secrets
 
@@ -81,7 +89,7 @@ For local development, place this in `.streamlit/secrets.toml`. That file is int
 Run the baseline verification suite before changing model, data, or Streamlit workflow code:
 
 ```bash
-python3 -m compileall -q *.py clustering streamlit_flow tests ML_Dash_files
+python3 -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files
 UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
 ```
 
@@ -98,6 +106,7 @@ Current engineering observations:
 - `main.py` imports successfully once declared dependencies are installed.
 - Model training and data generation are isolated behind function calls instead of running during module import.
 - Matplotlib may warn about cache directories when the home cache path is not writable.
+- Saved `.joblib` model artifacts currently load successfully, but may emit a scikit-learn version compatibility warning until the artifacts are refreshed with the active locked runtime.
 - A real Streamlit browser session is still the best way to verify every tab and interaction.
 
 ## Development Roadmap
