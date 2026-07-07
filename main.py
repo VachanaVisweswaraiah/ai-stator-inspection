@@ -11,17 +11,22 @@ from sklearn.cluster import KMeans, DBSCAN
 from data_model import data_model
 from Compute_fit import compute_fit, count_yes_no
 from clustering.k_means import perform_kmeans
-from Decision_Tress import Decision_Tress
-from Probabilistic_DT import Probabilistic_Decision_Tree
-from Iris_PDT import Probabilistic_Decision_Tree_Iris, df_fitting_and_evaluation_iris
-from steel_faults_PDT import Probabilistic_Decision_Tree_Steel_Faults, df_fitting_and_evaluation_steel_faults
-from vw_sample_data_PDT import Probabilistic_Decision_Tree_VW_Sample, df_fitting_and_evaluation_vw_sample
 from src.data.loaders import (
     load_engineering_data,
     load_fake_data,
     load_pdt_predicted_data,
     load_predicted_data,
     load_vw_sample_data,
+)
+from src.models.workflows import (
+    Decision_Tress,
+    Probabilistic_Decision_Tree,
+    Probabilistic_Decision_Tree_Iris,
+    Probabilistic_Decision_Tree_Steel_Faults,
+    Probabilistic_Decision_Tree_VW_Sample,
+    df_fitting_and_evaluation_iris,
+    df_fitting_and_evaluation_steel_faults,
+    df_fitting_and_evaluation_vw_sample,
 )
 from src.models.artifacts import (
     load_decision_tree_model,

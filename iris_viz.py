@@ -11,9 +11,12 @@ from sklearn.cluster import KMeans, DBSCAN
 from data_model import data_model
 from Compute_fit import compute_fit, count_yes_no
 from clustering.k_means import perform_kmeans
-from Decision_Tress import Decision_Tress
-from Probabilistic_DT import Probabilistic_Decision_Tree
-from Iris_PDT import Probabilistic_Decision_Tree_Iris, df_fitting_and_evaluation_iris
+from src.models.workflows import (
+    Decision_Tress,
+    Probabilistic_Decision_Tree,
+    Probabilistic_Decision_Tree_Iris,
+    df_fitting_and_evaluation_iris,
+)
 from src.models.artifacts import load_iris_probabilistic_model
 import streamlit_flow
 from streamlit_flow import streamlit_flow

@@ -14,11 +14,12 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 8. Added GitHub Actions CI for automated quality checks.
 9. Documented model artifact governance and refresh criteria.
 10. Prepared Streamlit Cloud deployment settings and documentation.
+11. Introduced model workflow facades under `src.models`.
 
 ## Remaining Work
 
 - Refresh saved `.joblib` model artifacts with the active locked scikit-learn version after prediction changes are reviewed and accepted.
-- Move model training workflows into `src/models/` behind stable interfaces.
+- Move model training implementations into `src/models/` behind the existing workflow facade.
 - Move feature engineering logic into `src/features/`.
 - Split the large Streamlit app into smaller page/controller modules.
 - Add focused tests for modeling outputs and key Streamlit data transformations.
