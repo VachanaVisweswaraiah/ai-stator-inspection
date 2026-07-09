@@ -10,7 +10,7 @@ from src.config.paths import PROJECT_ROOT
 from src.models import workflows
 
 
-def test_model_workflow_facade_re_exports_existing_functions():
+def test_legacy_model_modules_re_export_package_workflows():
     expected_exports = {
         "Decision_Tress": root_decision_tree,
         "Probabilistic_Decision_Tree": root_probabilistic_tree,
@@ -22,6 +22,23 @@ def test_model_workflow_facade_re_exports_existing_functions():
     for export_name, root_function in expected_exports.items():
         assert getattr(workflows, export_name) is root_function
         assert export_name in workflows.__all__
+
+
+def test_model_training_implementations_are_owned_by_package_modules():
+    expected_modules = {
+        "Decision_Tress": "src.models.decision_tree",
+        "Probabilistic_Decision_Tree": "src.models.probabilistic_tree",
+        "Probabilistic_Decision_Tree_Iris": "src.models.iris_tree",
+        "Probabilistic_Decision_Tree_Steel_Faults": (
+            "src.models.steel_faults_tree"
+        ),
+        "Probabilistic_Decision_Tree_VW_Sample": (
+            "src.models.vw_sample_tree"
+        ),
+    }
+
+    for function_name, module_name in expected_modules.items():
+        assert getattr(workflows, function_name).__module__ == module_name
 
 
 def test_streamlit_modules_import_model_workflows_from_package_facade():

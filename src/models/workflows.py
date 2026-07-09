@@ -1,11 +1,14 @@
-from Decision_Tress import Decision_Tress
-from Iris_PDT import Probabilistic_Decision_Tree_Iris, df_fitting_and_evaluation_iris
-from Probabilistic_DT import Probabilistic_Decision_Tree
-from steel_faults_PDT import (
+from src.models.decision_tree import Decision_Tress
+from src.models.iris_tree import (
+    Probabilistic_Decision_Tree_Iris,
+    df_fitting_and_evaluation_iris,
+)
+from src.models.probabilistic_tree import Probabilistic_Decision_Tree
+from src.models.steel_faults_tree import (
     Probabilistic_Decision_Tree_Steel_Faults,
     df_fitting_and_evaluation_steel_faults,
 )
-from vw_sample_data_PDT import (
+from src.models.vw_sample_tree import (
     Probabilistic_Decision_Tree_VW_Sample,
     df_fitting_and_evaluation_vw_sample,
 )
