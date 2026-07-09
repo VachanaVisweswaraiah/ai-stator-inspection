@@ -1,6 +1,5 @@
 import plotly.figure_factory as ff
 from io import BytesIO
-from base64 import b64encode
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -18,6 +17,10 @@ from src.models.workflows import (
     df_fitting_and_evaluation_steel_faults,
 )
 from src.models.artifacts import load_steel_faults_probabilistic_model
+from src.visualization import (
+    dataframe_to_excel_download_link,
+    serialize_decision_tree,
+)
 import streamlit_flow
 from streamlit_flow import streamlit_flow
 from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
@@ -105,14 +108,7 @@ def get_table_download_link():
     'SigmoidOfAreas': [1.0, 0.4498, 0.1773, 0.9869, 0.9998, 0.9999, 0.3329, 0.9685, 0.1696, 1.0, 0.9999, 0.3241, 0.9997, 0.7161, 0.3125, 0.1322, 0.1322, 0.1284, 0.3787, 0.4729, 1.0]
     })
 
-    output = BytesIO()
-    writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    df.to_excel(writer, index=False, sheet_name='Sheet1')
-    writer.close()
-    processed_data = output.getvalue()
-    encoded_data = b64encode(processed_data).decode()
-    download_link = f'<a href="data:application/octet-stream;base64,{encoded_data}" download="data.xlsx">Download Sample Excel file</a>'
-    return download_link
+    return dataframe_to_excel_download_link(df)
 
 def steel_faults_probabilistic_decision_tree_viz(depth):
     preci_value, recall_value, accuracy_value, classification_report_val, confusion_matrix_test, dtc, feature_names = Probabilistic_Decision_Tree_Steel_Faults(depth)
@@ -499,43 +495,19 @@ def steel_faults_probabilistic_decision_tree_viz(depth):
                 st.success(f"Clicked Edge Label: {edge_label_map[selected_id]}")
             else:
                 st.info("Click on a node or edge to see its value.")
-            # Extract full tree as JSON
-            def extract_tree_json(node_idx):
-                is_leaf = dtc.tree_.feature[node_idx] == -2
-                if is_leaf:
-                    values = dtc.tree_.value[node_idx][0]
-                    predicted_class = dtc.classes_[values.argmax()]
-                    label_mapping = {
-                            0: 'Bumps',
-                            1: 'Dirtiness',
-                            2: 'K_Scratch',
-                            3: 'Other_Faults',
-                            4: 'Pastry',
-                            5: 'Stains',
-                            6: 'Z_Scratch'
-                        }
-                    
-                    return {
-                        "id": node_idx,
-                        "type": "leaf",
-                        "prediction": label_mapping.get(predicted_class, 'Unknown'),
-                        "samples": int(sum(values)),
-                        "class_distribution": values.tolist()
-                    }
-                else:
-                    feature = feature_names[dtc.tree_.feature[node_idx]]
-                    threshold = dtc.tree_.threshold[node_idx]
-                    left_idx = dtc.tree_.children_left[node_idx]
-                    right_idx = dtc.tree_.children_right[node_idx]
-                    return {
-                        "id": node_idx,
-                        "type": "split",
-                        "feature": feature,
-                        "threshold": threshold,
-                        "left": extract_tree_json(left_idx),
-                        "right": extract_tree_json(right_idx)
-                    }
-            tree_json = extract_tree_json(0)
+            tree_json = serialize_decision_tree(
+                dtc,
+                feature_names,
+                {
+                    0: "Bumps",
+                    1: "Dirtiness",
+                    2: "K_Scratch",
+                    3: "Other_Faults",
+                    4: "Pastry",
+                    5: "Stains",
+                    6: "Z_Scratch",
+                },
+            )
             return tree_json
         
         json = visualize_steel_faults_probabilistic_decision_tree(dtc, feature_names)

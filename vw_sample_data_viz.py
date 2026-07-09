@@ -1,6 +1,5 @@
 import plotly.figure_factory as ff
 from io import BytesIO
-from base64 import b64encode
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -13,6 +12,10 @@ from src.data.loaders import load_vw_sample_data
 from src.features.clustering import perform_kmeans
 from src.features.engineering import compute_fit, count_yes_no, data_model
 from src.models.artifacts import load_vw_sample_probabilistic_model
+from src.visualization import (
+    dataframe_to_excel_download_link,
+    serialize_decision_tree,
+)
 from src.models.workflows import (
     Decision_Tress,
     Probabilistic_Decision_Tree,
@@ -71,14 +74,7 @@ def get_table_download_link():
     .apply(lambda x: x.sample(n=3, random_state=42))
     .reset_index(drop=True))
 
-    output = BytesIO()
-    writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    df.to_excel(writer, index=False, sheet_name='Sheet1')
-    writer.close()
-    processed_data = output.getvalue()
-    encoded_data = b64encode(processed_data).decode()
-    download_link = f'<a href="data:application/octet-stream;base64,{encoded_data}" download="data.xlsx">Download Sample Excel file</a>'
-    return download_link
+    return dataframe_to_excel_download_link(df)
 
 def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
     preci_value, recall_value, accuracy_value, classification_report_val, confusion_matrix_test, dtc, feature_names = Probabilistic_Decision_Tree_VW_Sample(depth,selected_to_drop)
@@ -482,38 +478,11 @@ def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
                 st.success(f"Clicked Edge Label: {edge_label_map[selected_id]}")
             else:
                 st.info("Click on a node or edge to see its value.")
-            # Extract full tree as JSON
-            def extract_tree_json(node_idx):
-                is_leaf = dtc.tree_.feature[node_idx] == -2
-                if is_leaf:
-                    values = dtc.tree_.value[node_idx][0]
-                    predicted_class = dtc.classes_[values.argmax()]
-                    label_mapping = {
-                            0: 'IO',
-                            1: 'NIO'
-                        }
-                    
-                    return {
-                        "id": node_idx,
-                        "type": "leaf",
-                        "prediction": label_mapping.get(predicted_class, 'Unknown'),
-                        "samples": int(sum(values)),
-                        "class_distribution": values.tolist()
-                    }
-                else:
-                    feature = feature_names[dtc.tree_.feature[node_idx]]
-                    threshold = dtc.tree_.threshold[node_idx]
-                    left_idx = dtc.tree_.children_left[node_idx]
-                    right_idx = dtc.tree_.children_right[node_idx]
-                    return {
-                        "id": node_idx,
-                        "type": "split",
-                        "feature": feature,
-                        "threshold": threshold,
-                        "left": extract_tree_json(left_idx),
-                        "right": extract_tree_json(right_idx)
-                    }
-            tree_json = extract_tree_json(0)
+            tree_json = serialize_decision_tree(
+                dtc,
+                feature_names,
+                {0: "IO", 1: "NIO"},
+            )
             return tree_json
         
         json = visualize_vw_sample_probabilistic_decision_tree(dtc, feature_names)
