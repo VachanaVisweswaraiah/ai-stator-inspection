@@ -6,6 +6,7 @@ PMV4 Analytics is organized around a Streamlit application layer and a gradually
 
 - `app/streamlit_app.py` is the preferred Streamlit entry point for deployment.
 - `app/navigation.py` owns the sidebar navigation contract.
+- `app/ui.py` owns shared page configuration and heading primitives.
 - `main.py` remains available for backward-compatible local execution while functionality is migrated into `src/`.
 
 ## Target Module Boundaries

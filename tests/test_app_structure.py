@@ -9,6 +9,7 @@ def test_portfolio_project_structure_exists():
         "app/__init__.py",
         "app/navigation.py",
         "app/streamlit_app.py",
+        "app/ui.py",
         "src/__init__.py",
         "src/config/__init__.py",
         "src/data/__init__.py",

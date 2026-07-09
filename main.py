@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from sklearn.cluster import KMeans, DBSCAN
 from app.navigation import select_section
+from app.ui import configure_page, render_page_title
 from src.data.loaders import (
     load_engineering_data,
     load_fake_data,
@@ -40,7 +41,7 @@ import json
 import json as json_lib 
 from openai import OpenAI
 
-st.set_page_config(layout="wide")
+configure_page()
 
 def color_code(val):
     if val == 'OK':
@@ -2403,7 +2404,7 @@ def main():
         df_bar_chart_fitting_group()
 
     elif selected_section == 'Data Understanding':
-        st.markdown('<h1 style="text-align: center;">Box and Cylinder Analysis</h1>', unsafe_allow_html=True)
+        render_page_title("Box and Cylinder Analysis")
         st.header('Synthetic Dataset')
         main_df, df1 = df_fitting_and_evaluation()
         main_df.drop(columns=['fitting_distance','Prediction', 'Evaluation','fitting_group'], inplace=True)
@@ -2420,14 +2421,14 @@ def main():
             scatter_plot()
 
     elif selected_section == 'k-means':
-        st.markdown('<h1 style="text-align: center;">Box and Cylinder Analysis</h1>', unsafe_allow_html=True)
+        render_page_title("Box and Cylinder Analysis")
         kmeans_info_popover()
         fitting_group_visualisation()
         #fitting_group_visualisation_dbscan()
         kmeans()
 
     elif selected_section == 'Decision Tree':
-        st.markdown('<h1 style="text-align: center;">Box and Cylinder Analysis</h1>', unsafe_allow_html=True)
+        render_page_title("Box and Cylinder Analysis")
         st.header("Predictions for Synthetic Dataset")
         main_df, df1 = df_fitting_and_evaluation()
         st.dataframe(df1,hide_index=True,width=1250)
@@ -2435,7 +2436,7 @@ def main():
         decision_tree_viz(depth)
     
     elif selected_section == 'Probabilistic Decision Tree':
-        st.markdown('<h1 style="text-align: center;">Box and Cylinder Analysis</h1>', unsafe_allow_html=True)
+        render_page_title("Box and Cylinder Analysis")
         st.header("Predictions for Synthetic Dataset")
         main_df, df1 = df_fitting_and_evaluation_PDT()
         st.dataframe(df1,hide_index=True,width=1250)
@@ -2443,7 +2444,7 @@ def main():
         probabilistic_decision_tree_viz(depth)
     
     elif selected_section == 'Iris PDT':
-        st.markdown('<h1 style="text-align: center;">IRIS Dataset Analysis</h1>', unsafe_allow_html=True)
+        render_page_title("IRIS Dataset Analysis")
         st.header("Iris Dataset")
         df1 = df_fitting_and_evaluation_iris()
         st.dataframe(df1,hide_index=True,width=1250)
@@ -2453,7 +2454,7 @@ def main():
         iris_probabilistic_decision_tree_viz(depth)
 
     elif selected_section == 'Steel Faults PDT':
-        st.markdown('<h1 style="text-align: center;">Steel Faults Dataset Analysis</h1>', unsafe_allow_html=True)
+        render_page_title("Steel Faults Dataset Analysis")
         st.header("Steel Faults Dataset")
         df1 = df_fitting_and_evaluation_steel_faults()
         st.dataframe(df1,hide_index=True,width=1250)
@@ -2467,7 +2468,7 @@ def main():
         df_actual = df_actual.drop(columns=['pin_position','stator_id','ProduktID', 'Pinbezeichnung','left_pin_id', 'right_pin_id','Drahtprüfung_Ergebnis_x', 'Pin_ID_x','Dachbiegen_Ergebnis_x', 'Pin_Type_x', '3D_Biegen_Ergebnis_x',
        'Abisolieren_eval_x', 'Drahtprüfung_Ergebnis_y', 'Pin_ID_y',
        'Dachbiegen_Ergebnis_y', 'Pin_Type_y', '3D_Biegen_Ergebnis_y', 'Ergebnis'])
-        st.markdown('<h1 style="text-align: center;">Volkswagen Dataset Analysis</h1>', unsafe_allow_html=True)
+        render_page_title("Volkswagen Dataset Analysis")
         st.header("Volkswagen Dataset")
         df1 = df_fitting_and_evaluation_vw_sample()
         st.dataframe(df1,hide_index=True,width=1250)
