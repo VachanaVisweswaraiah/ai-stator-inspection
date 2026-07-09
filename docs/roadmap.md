@@ -16,6 +16,7 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 10. Prepared Streamlit Cloud deployment settings and documentation.
 11. Introduced model workflow facades under `src.models`.
 12. Introduced feature and clustering facades under `src.features`.
+13. Updated Streamlit visualization modules to use the feature facades consistently.
 
 ## Remaining Work
 

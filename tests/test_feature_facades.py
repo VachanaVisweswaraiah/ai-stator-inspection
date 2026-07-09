@@ -19,8 +19,15 @@ def test_clustering_facade_re_exports_existing_helper():
     assert clustering.perform_kmeans is root_perform_kmeans
 
 
-def test_primary_app_modules_import_feature_helpers_from_package_facades():
-    app_modules = ["main.py", "app.py", "kmeans_main.py"]
+def test_streamlit_modules_import_feature_helpers_from_package_facades():
+    app_modules = [
+        "main.py",
+        "app.py",
+        "kmeans_main.py",
+        "iris_viz.py",
+        "steel_faults_viz.py",
+        "vw_sample_data_viz.py",
+    ]
     legacy_imports = [
         "from Compute_fit import",
         "from create_fake_data import",

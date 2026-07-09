@@ -8,10 +8,9 @@ import plotly.graph_objects as go
 import plotly.express as px
 from streamlit_option_menu import option_menu
 from sklearn.cluster import KMeans, DBSCAN
-from data_model import data_model
-from Compute_fit import compute_fit, count_yes_no
-from clustering.k_means import perform_kmeans
 from src.data.loaders import load_vw_sample_data
+from src.features.clustering import perform_kmeans
+from src.features.engineering import compute_fit, count_yes_no, data_model
 from src.models.artifacts import load_vw_sample_probabilistic_model
 from src.models.workflows import (
     Decision_Tress,
