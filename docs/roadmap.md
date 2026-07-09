@@ -17,6 +17,7 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 11. Introduced model workflow facades under `src.models`.
 12. Introduced feature and clustering facades under `src.features`.
 13. Updated Streamlit visualization modules to use the feature facades consistently.
+14. Added prediction-contract tests for every governed model artifact.
 
 ## Remaining Work
 
@@ -24,7 +25,7 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 - Move model training implementations into `src/models/` behind the existing workflow facade.
 - Move feature engineering and clustering implementations into `src/features/` behind the existing facades.
 - Split the large Streamlit app into smaller page/controller modules.
-- Add focused tests for modeling outputs and key Streamlit data transformations.
+- Add focused tests for key Streamlit data transformations.
 - Improve UI consistency after the internal structure is stable.
 - Create the Streamlit Cloud app from `app/streamlit_app.py` and add the optional AI secret in the hosted app settings.
 
