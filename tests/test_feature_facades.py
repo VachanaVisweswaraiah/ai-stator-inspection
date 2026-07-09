@@ -8,15 +8,21 @@ from src.config.paths import PROJECT_ROOT
 from src.features import clustering, engineering
 
 
-def test_engineering_facade_re_exports_existing_helpers():
+def test_legacy_engineering_modules_re_export_package_helpers():
     assert engineering.compute_fit is root_compute_fit
     assert engineering.count_yes_no is root_count_yes_no
     assert engineering.create_fake_dataset is root_create_fake_dataset
     assert engineering.data_model is root_data_model
 
 
-def test_clustering_facade_re_exports_existing_helper():
+def test_legacy_clustering_module_re_exports_package_helper():
     assert clustering.perform_kmeans is root_perform_kmeans
+
+
+def test_feature_implementations_are_owned_by_package_modules():
+    assert engineering.compute_fit.__module__ == "src.features.engineering"
+    assert engineering.create_fake_dataset.__module__ == "src.features.engineering"
+    assert clustering.perform_kmeans.__module__ == "src.features.clustering"
 
 
 def test_streamlit_modules_import_feature_helpers_from_package_facades():

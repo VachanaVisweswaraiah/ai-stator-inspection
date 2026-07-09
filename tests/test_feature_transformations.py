@@ -1,7 +1,7 @@
 import pandas as pd
 
-import Compute_fit
 from src.features.clustering import perform_kmeans
+from src.features import engineering
 from src.features.engineering import compute_fit, count_yes_no
 
 
@@ -40,7 +40,7 @@ def _manufacturing_rows():
 
 
 def test_compute_fit_preserves_current_tolerance_boundaries(monkeypatch):
-    monkeypatch.setattr(Compute_fit, "load_fake_data", _manufacturing_rows)
+    monkeypatch.setattr(engineering, "load_fake_data", _manufacturing_rows)
 
     result = compute_fit()
 
@@ -49,7 +49,7 @@ def test_compute_fit_preserves_current_tolerance_boundaries(monkeypatch):
 
 
 def test_count_yes_no_matches_transformed_rows(monkeypatch):
-    monkeypatch.setattr(Compute_fit, "load_fake_data", _manufacturing_rows)
+    monkeypatch.setattr(engineering, "load_fake_data", _manufacturing_rows)
 
     result, count_yes, count_no = count_yes_no()
 
