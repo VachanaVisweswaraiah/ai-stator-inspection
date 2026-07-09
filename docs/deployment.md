@@ -41,6 +41,9 @@ uv run streamlit run app/streamlit_app.py
 UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
 ```
 
+The complete release gate and post-deployment checks are documented in
+`docs/release_verification.md`.
+
 ## Expected Runtime Assets
 
 The deployment expects the repository-owned datasets and model artifacts to be present in the repository root. Paths are resolved through `src.config.paths`, so the app should not depend on the current working directory when launched through `app/streamlit_app.py`.

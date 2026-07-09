@@ -23,6 +23,7 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 17. Moved model training implementations into `src.models`.
 18. Extracted the Streamlit sidebar navigation controller into `app`.
 19. Standardized page metadata and headings with shared Streamlit UI primitives.
+20. Added an executable Streamlit release smoke test and verification guide.
 
 ## Remaining Work
 
