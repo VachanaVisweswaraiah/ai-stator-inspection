@@ -6,8 +6,8 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
-from streamlit_option_menu import option_menu
 from sklearn.cluster import KMeans, DBSCAN
+from app.navigation import select_section
 from src.data.loaders import (
     load_engineering_data,
     load_fake_data,
@@ -2395,17 +2395,7 @@ def generate_analysis_from_llm(prompt, client, tree_json):
 
 
 def main():
-    sections = {'Data Understanding': 'Data Understanding', 'K-Means': 'k-means', 'Decision Tree': 'Decision Tree', 'Probabilistic Decision Tree': 'Probabilistic Decision Tree', 'Iris PDT': 'Iris PDT', 'Steel Faults PDT': 'Steel Faults PDT','Volkswagen PDT': 'Volkswagen PDT'}
-
-    # Define the options for the navigation menu
-    options = list(sections.keys())
-
-    # Use the option_menu for sidebar menu
-    with st.sidebar:
-        selected_nav = option_menu("PMV4 Analytics", options, default_index=0)
-
-    # Map the selected option to the corresponding section
-    selected_section = sections.get(selected_nav)
+    selected_section = select_section()
 
     # Display content based on the selected section
     if selected_section == 'Bar-Chart':

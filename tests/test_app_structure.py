@@ -7,6 +7,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 def test_portfolio_project_structure_exists():
     expected_paths = [
         "app/__init__.py",
+        "app/navigation.py",
         "app/streamlit_app.py",
         "src/__init__.py",
         "src/config/__init__.py",

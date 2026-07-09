@@ -21,11 +21,11 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 15. Added regression tests for manufacturing and clustering transformations.
 16. Moved feature engineering and clustering implementations into `src.features`.
 17. Moved model training implementations into `src.models`.
+18. Extracted the Streamlit sidebar navigation controller into `app`.
 
 ## Remaining Work
 
 - Refresh saved `.joblib` model artifacts with the active locked scikit-learn version after prediction changes are reviewed and accepted.
-- Split the large Streamlit app into smaller page/controller modules.
 - Improve UI consistency after the internal structure is stable.
 - Create the Streamlit Cloud app from `app/streamlit_app.py` and add the optional AI secret in the hosted app settings.
 
