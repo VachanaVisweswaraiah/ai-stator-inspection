@@ -43,8 +43,10 @@ def load_model_vw_sample_pdt():
     vw_sample_probabilistic_decision_tree_model = load_vw_sample_probabilistic_model()
     return vw_sample_probabilistic_decision_tree_model
 
-def predict_input_pdt(df_input_val):
-    probabilistic_decision_tree_model = load_model_vw_sample_pdt()
+def predict_input_pdt(df_input_val, model=None):
+    probabilistic_decision_tree_model = (
+        model or load_model_vw_sample_pdt()
+    )
     predictions = probabilistic_decision_tree_model.predict(df_input_val)
     return predictions
 
@@ -171,7 +173,7 @@ def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
                             [[number1, number2, number3, number4]],
                             columns=['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm'])
                         #df_input_val = rename_dataframe_columns(df_input_val)
-                        prediction = predict_input_pdt(df_input_val)
+                        prediction = predict_input_pdt(df_input_val, dtc)
                         display_prediction(prediction)
             else:
                 st.warning('There are more than 30 input features and hence Manual Input is disabled')
@@ -211,7 +213,7 @@ def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
                 #     st.write(df_input_val)
                 if st.button("Make Prediction"):
                     # df_input_val = rename_dataframe_columns(df_input_val)
-                    predictions = predict_input_pdt(df_input_val)
+                    predictions = predict_input_pdt(df_input_val, dtc)
 
                     # Label mapping dictionary
                     label_mapping = {
@@ -577,7 +579,6 @@ def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
             tree_json = extract_tree_json(0)
             return tree_json
         
-        preci_value, recall_value, accuracy_value, classification_report_val, confusion_matrix_test, dtc, feature_names = Probabilistic_Decision_Tree_VW_Sample(depth,selected_to_drop)
         json = visualize_vw_sample_probabilistic_decision_tree(dtc, feature_names)
         llm_analysis(json, "vw_sample")
         

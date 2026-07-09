@@ -6,6 +6,7 @@ from src.config.paths import (
     IRIS_PROBABILISTIC_MODEL_PATH,
     PROBABILISTIC_DECISION_TREE_MODEL_PATH,
     STEEL_FAULTS_PROBABILISTIC_MODEL_PATH,
+    VW_SAMPLE_PROBABILISTIC_MODEL_PATH,
 )
 
 
@@ -17,6 +18,7 @@ class ModelArtifact:
     training_function: str
     depth: int
     prediction_context: str
+    committed: bool = True
 
 
 MODEL_ARTIFACTS = (
@@ -51,5 +53,14 @@ MODEL_ARTIFACTS = (
         training_function="Probabilistic_Decision_Tree_Steel_Faults",
         depth=20,
         prediction_context="Steel faults probabilistic decision tree predictions",
+    ),
+    ModelArtifact(
+        name="probabilistic_decision_tree_model_VW_Sample.joblib",
+        path=VW_SAMPLE_PROBABILISTIC_MODEL_PATH,
+        training_module="src.models.vw_sample_tree",
+        training_function="Probabilistic_Decision_Tree_VW_Sample",
+        depth=5,
+        prediction_context="Volkswagen sample probabilistic decision tree predictions",
+        committed=False,
     ),
 )

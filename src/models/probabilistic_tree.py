@@ -5,9 +5,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report, precision_score, recall_score
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn import tree
-import joblib
 from src.config.paths import PROBABILISTIC_DECISION_TREE_MODEL_PATH
 from src.data.loaders import load_fake_data
+from src.models.persistence import save_model_artifact
 
 
 def df_fitting_and_evaluation():
@@ -55,7 +55,7 @@ def prepare_DT_df():
     return df
 
 
-def Probabilistic_Decision_Tree(depth):
+def Probabilistic_Decision_Tree(depth, persist=False):
     df = prepare_DT_df()
     #print(df.head())
     X = df.iloc[:, 0:6]
@@ -69,8 +69,8 @@ def Probabilistic_Decision_Tree(depth):
     dtc = DecisionTreeClassifier(criterion='entropy', max_depth=depth)
     dtc.fit(x_main, y_main)
 
-    # Save the model
-    joblib.dump(dtc, PROBABILISTIC_DECISION_TREE_MODEL_PATH)
+    if persist:
+        save_model_artifact(dtc, PROBABILISTIC_DECISION_TREE_MODEL_PATH)
 
     # Instead of normal predict, use predict_proba + argmax to simulate probabilistic prediction
     y_proba_val = dtc.predict_proba(x_val)

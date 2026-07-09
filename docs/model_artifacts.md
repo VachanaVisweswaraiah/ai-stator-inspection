@@ -10,8 +10,11 @@ The application uses committed `.joblib` files so prediction workflows can run w
 | `probabilistic_decision_tree_model.joblib` | `src.models.probabilistic_tree.Probabilistic_Decision_Tree` | 6 | Synthetic manufacturing probabilistic decision tree predictions |
 | `probabilistic_decision_tree_model_Iris.joblib` | `src.models.iris_tree.Probabilistic_Decision_Tree_Iris` | 4 | Iris probabilistic decision tree predictions |
 | `probabilistic_decision_tree_model_Steel_Faults.joblib` | `src.models.steel_faults_tree.Probabilistic_Decision_Tree_Steel_Faults` | 20 | Steel faults probabilistic decision tree predictions |
+| `probabilistic_decision_tree_model_VW_Sample.joblib` | `src.models.vw_sample_tree.Probabilistic_Decision_Tree_VW_Sample` | 5 | Optional offline Volkswagen sample artifact |
 
-The same metadata is represented in `src/models/registry.py` so tests can validate that committed artifacts and documentation stay aligned.
+The same metadata is represented in `src/models/registry.py` so tests can validate that committed artifacts and documentation stay aligned. The Volkswagen artifact is governed but is not currently committed.
+
+Interactive workflows train their selected-depth model in memory and do not write repository artifacts. Passing `persist=True` to a training workflow is reserved for an intentional offline artifact refresh.
 
 ## Refresh Policy
 

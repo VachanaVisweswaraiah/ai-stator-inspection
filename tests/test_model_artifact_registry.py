@@ -10,7 +10,10 @@ def test_model_artifact_registry_points_to_existing_files():
     assert MODEL_ARTIFACTS
 
     for artifact in MODEL_ARTIFACTS:
-        assert artifact.path.is_file(), f"Missing model artifact: {artifact.name}"
+        if artifact.committed:
+            assert artifact.path.is_file(), (
+                f"Missing model artifact: {artifact.name}"
+            )
         assert artifact.path.name == artifact.name
         assert artifact.depth > 0
         assert artifact.training_module
@@ -20,6 +23,9 @@ def test_model_artifact_registry_points_to_existing_files():
 
 def test_registered_model_depths_match_committed_artifacts():
     for artifact in MODEL_ARTIFACTS:
+        if not artifact.committed:
+            continue
+
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             model = joblib.load(artifact.path)

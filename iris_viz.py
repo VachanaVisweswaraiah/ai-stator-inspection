@@ -41,8 +41,10 @@ def load_model_iris_pdt():
     iris_probabilistic_decision_tree_model = load_iris_probabilistic_model()
     return iris_probabilistic_decision_tree_model
 
-def predict_input_pdt(df_input_val):
-    probabilistic_decision_tree_model = load_model_iris_pdt()
+def predict_input_pdt(df_input_val, model=None):
+    probabilistic_decision_tree_model = (
+        model or load_model_iris_pdt()
+    )
     predictions = probabilistic_decision_tree_model.predict(df_input_val)
     return predictions
 
@@ -167,7 +169,7 @@ def iris_probabilistic_decision_tree_viz(depth):
                         [[number1, number2, number3, number4]],
                         columns=['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm'])
                     #df_input_val = rename_dataframe_columns(df_input_val)
-                    prediction = predict_input_pdt(df_input_val)
+                    prediction = predict_input_pdt(df_input_val, dtc)
                     display_prediction(prediction)
 
         elif option == "Upload Excel File":
@@ -194,7 +196,7 @@ def iris_probabilistic_decision_tree_viz(depth):
                 #     st.write(df_input_val)
                 if st.button("Make Prediction"):
                     #df_input_val = rename_dataframe_columns(df_input_val)
-                    predictions = predict_input_pdt(df_input_val)
+                    predictions = predict_input_pdt(df_input_val, dtc)
                     prediction_labels = ['Iris-Setosa' if pred == 0 else 'Iris-Versicolor' if pred == 1 else 'Iris-Virginica' for pred in predictions]
                     df_input_val['Prediction'] = prediction_labels
 
@@ -514,7 +516,6 @@ def iris_probabilistic_decision_tree_viz(depth):
             tree_json = extract_tree_json(0)
             return tree_json
         
-        preci_value, recall_value, accuracy_value, classification_report_val, confusion_matrix_test, dtc, feature_names = Probabilistic_Decision_Tree_Iris(depth)
         json = visualize_iris_probabilistic_decision_tree(dtc, feature_names)
         llm_analysis(json, "iris")
         
