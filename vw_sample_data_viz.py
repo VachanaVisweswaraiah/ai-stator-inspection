@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from streamlit_option_menu import option_menu
 from sklearn.cluster import KMeans, DBSCAN
+from app.ai_analysis import render_tree_analysis
 from src.data.loaders import load_vw_sample_data
 from src.features.clustering import perform_kmeans
 from src.features.engineering import compute_fit, count_yes_no, data_model
@@ -23,9 +24,7 @@ from streamlit_flow import streamlit_flow
 from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
 from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import TreeLayout
-import json
 import json as json_lib 
-from openai import OpenAI
 import hashlib
 
 def rename_dataframe_columns(df):
@@ -80,68 +79,6 @@ def get_table_download_link():
     encoded_data = b64encode(processed_data).decode()
     download_link = f'<a href="data:application/octet-stream;base64,{encoded_data}" download="data.xlsx">Download Sample Excel file</a>'
     return download_link
-
-def llm_analysis(json,sess_state):
-    if f"llm_answer_{sess_state}" not in st.session_state:
-        st.session_state[f"llm_answer_{sess_state}"] = None
-    st.header("AI-Powered Analysis")
-    prompt = st.text_area("Describe your Question:", 
-    placeholder="Example: How many path leads to NIO leaf Node\n", key=f"prompt_input_{sess_state}")
-
-    if st.button("Generate AI-Based Analysis"):
-        client = OpenAI(api_key=st.secrets["api_keys"]["gemini"], base_url="https://generativelanguage.googleapis.com/v1beta/openai/")
-        answer = generate_analysis_from_llm(prompt, client, json)
-        if answer:
-            st.session_state[f"llm_answer_{sess_state}"] = answer
-    if st.session_state[f"llm_answer_{sess_state}"]:
-        st.markdown("### LLM Answer:")
-        st.write(st.session_state[f"llm_answer_{sess_state}"])
-            
-
-def generate_analysis_from_llm(prompt, client, tree_json):
-    def convert_numpy(obj):
-        if isinstance(obj, dict):
-            return {k: convert_numpy(v) for k, v in obj.items()}
-        elif isinstance(obj, list):
-            return [convert_numpy(v) for v in obj]
-        elif hasattr(obj, 'item'):
-            return obj.item()
-        else:
-            return obj
-
-    # Clean and stringify the JSON
-    cleaned_json = convert_numpy(tree_json)
-    tree_str = json.dumps(cleaned_json, indent=2)
-
-    # Create the system prompt with JSON inside as plain text
-    system_prompt = (
-        "You are an AI specializing in analysing JSON-based decision trees. "
-        "Your task is to answer user questions based only with the provided decision tree below.\n\n"
-        "Here is the decision tree:\n" + tree_str + "You should only give the answer from the context of the provided decision tree.\n\n "
-        "DO not provide the json structure and id in the answer. Let it be a natural language and do not use the word json or id in the answer"
-    )
-
-    messages = [
-        {
-            "role": "system",
-            "content": system_prompt
-        },
-        {
-            "role": "user",
-            "content": prompt + "according to the provided decision tree"
-        }
-    ]
-
-    try:
-        response = client.chat.completions.create(
-            model="gemini-3-flash-preview",
-            messages=messages
-        )
-        return response.choices[0].message.content.strip()
-
-    except Exception as e:
-        st.error(f"Error generating Analysis: {e}")
-        return None
 
 def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
     preci_value, recall_value, accuracy_value, classification_report_val, confusion_matrix_test, dtc, feature_names = Probabilistic_Decision_Tree_VW_Sample(depth,selected_to_drop)
@@ -580,7 +517,11 @@ def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
             return tree_json
         
         json = visualize_vw_sample_probabilistic_decision_tree(dtc, feature_names)
-        llm_analysis(json, "vw_sample")
+        render_tree_analysis(
+            json,
+            "vw_sample",
+            "Example: How many path leads to NIO leaf Node\n",
+        )
         
     with tab5:
         # st.header("Analyse via Image")

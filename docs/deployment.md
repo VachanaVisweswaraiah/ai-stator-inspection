@@ -21,7 +21,7 @@ The optional AI analysis feature expects this secret in the Streamlit Cloud app 
 gemini = "your-api-key"
 ```
 
-The app can still load and display the non-AI workflows without committing local secret files. Do not commit `.streamlit/secrets.toml`.
+The app can still load and display the non-AI workflows without committing local secret files. If a visitor requests AI analysis without this secret, the app displays an availability warning instead of failing. Do not commit `.streamlit/secrets.toml`.
 
 ## Pre-Deployment Checklist
 

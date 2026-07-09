@@ -25,6 +25,7 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 19. Standardized page metadata and headings with shared Streamlit UI primitives.
 20. Added an executable Streamlit release smoke test and verification guide.
 21. Separated interactive model training from explicit artifact persistence.
+22. Centralized optional Gemini tree analysis behind a tested service layer.
 
 ## Remaining Work
 

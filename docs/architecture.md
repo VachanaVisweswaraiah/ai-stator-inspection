@@ -17,6 +17,7 @@ PMV4 Analytics is organized around a Streamlit application layer and a gradually
 - `src/models/` contains model training workflows and artifact loading utilities.
 - `src/visualization/` will contain Plotly and tree visualization helpers.
 - `src/services/` will contain external service integrations, including AI-assisted analysis.
+- `src/services/tree_analysis.py` owns Gemini-compatible decision-tree analysis without depending on Streamlit.
 
 The migration is intentionally incremental so that each refactor can be tested without changing user-facing functionality.
 
@@ -29,3 +30,5 @@ Runtime modules should use `src.data.loaders` for repository-owned datasets and 
 Streamlit modules import training and evaluation workflows through `src.models.workflows`. Root-level training modules remain as compatibility entry points.
 
 Primary app modules import engineering and clustering helpers through `src.features`. Root-level feature modules remain as compatibility entry points.
+
+Shared Streamlit rendering for optional AI analysis lives in `app/ai_analysis.py`. Missing hosted secrets are handled as a disabled optional capability instead of an application failure.
