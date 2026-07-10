@@ -1,98 +1,114 @@
 # PMV4 Analytics
 
-PMV4 Analytics is a Streamlit-based machine learning dashboard for exploring manufacturing-style process data and benchmark classification datasets. The app combines data understanding, clustering, decision tree modeling, probabilistic decision tree views, and optional AI-assisted analysis of tree structures.
-
-The project is being developed as a portfolio-grade ML application with reproducible setup, automated baseline checks, structured model workflows, and deployment-ready documentation.
-
-Automated quality checks run through GitHub Actions on pushes and pull requests.
+PMV4 Analytics is a deployed Streamlit machine learning dashboard for manufacturing-style process analysis and benchmark classification workflows. It combines data exploration, clustering, decision-tree prediction, probabilistic tree visualization, and optional AI-assisted tree interpretation in one application.
 
 Live app: https://ai-stator-inspection.streamlit.app/
 
-## Current App Entry Point
+Repository: https://github.com/VachanaVisweswaraiah/ai-stator-inspection
 
-The preferred Streamlit app entry point is:
+## Project Context
 
-```bash
-streamlit run app/streamlit_app.py
+This application was developed as part of a master's project focused on manufacturing analytics, including a Volkswagen Group sample-data workflow for probabilistic decision-tree inspection. The public repository presents the project as a cleaned, reproducible, portfolio-ready ML application while preserving the original app functionality.
+
+## Project Highlights
+
+- End-to-end Streamlit app deployed from a cleaned GitHub repository.
+- Modularized `app/` and `src/` structure for UI controllers, data loading, feature engineering, model workflows, services, and visualization helpers.
+- Runtime datasets organized under `data/` and governed model artifacts under `artifacts/models/`.
+- Automated CI with lockfile validation, tests, Python compilation, and whitespace checks.
+- Streamlit smoke tests covering every navigation workflow.
+- Prediction-contract tests for committed model artifacts.
+- Documented reproducibility, deployment, model artifact governance, and release verification.
+
+## Application Workflows
+
+The app includes seven primary workflows:
+
+- Data Understanding: synthetic box-and-cylinder manufacturing data exploration.
+- K-Means: clustering analysis and fitting-group visualization.
+- Decision Tree: deterministic decision-tree predictions and tree inspection.
+- Probabilistic Decision Tree: probabilistic tree workflow for synthetic manufacturing data.
+- Iris PDT: probabilistic decision-tree workflow for the Iris dataset.
+- Steel Faults PDT: probabilistic decision-tree workflow for steel fault classification.
+- Volkswagen PDT: probabilistic decision-tree workflow based on Volkswagen Group sample data.
+
+Optional AI analysis is available when a Gemini-compatible API key is configured in Streamlit secrets. Without the secret, the rest of the app remains available and the AI feature displays a graceful availability warning.
+
+## Architecture
+
+```text
+app/
+  streamlit_app.py        Deployment entry point
+  navigation.py           Sidebar navigation contract
+  pages/                  Page controllers for each workflow
+  ai_analysis.py          Optional AI analysis UI
+  ui.py                   Shared Streamlit UI primitives
+
+src/
+  config/                 Project paths and configuration
+  data/                   Dataset loaders
+  features/               Feature engineering and clustering logic
+  models/                 Model workflows, artifact loading, registry
+  services/               External service integrations
+  visualization/          Shared tree/export helpers
+
+data/                     Committed runtime datasets
+artifacts/models/         Committed model artifacts
+artifacts/images/         Reference tree images
+docs/                     Architecture, deployment, release, reproducibility docs
+tests/                    Unit, contract, CI, and Streamlit smoke tests
 ```
 
-The original top-level entry point is still supported during the incremental modularization:
+`app/streamlit_app.py` is the deployment entry point. `main.py` remains as the compatibility coordinator while the app continues its incremental migration into the structured package layout.
 
-```bash
-streamlit run main.py
-```
+## Quick Start
 
-`main.py` is the most complete app and includes these navigation sections:
-
-- Data Understanding
-- K-Means
-- Decision Tree
-- Probabilistic Decision Tree
-- Iris PDT
-- Steel Faults PDT
-- Volkswagen PDT
-
-There is also an older/smaller Streamlit app in `app.py`, plus a Dash prototype in `ML_Dash_files/main.py`.
-
-## Project Contents
-
-- `main.py` - primary Streamlit dashboard.
-- `app/streamlit_app.py` - deployment-friendly Streamlit entry point.
-- `src/` - package structure for modularized data, model, service, and visualization code.
-- `data/` - committed runtime datasets and generated prediction tables used by the app.
-- `artifacts/models/` - committed model artifacts loaded for prediction workflows.
-- `artifacts/images/` - committed reference images generated by tree visualization workflows.
-- `docs/` - project architecture and methodology documentation.
-- `app.py` - smaller legacy Streamlit dashboard.
-- `*_PDT.py` - probabilistic decision tree model helpers for each dataset.
-- `*_viz.py` - Streamlit visualization flows for dataset-specific probabilistic decision trees.
-- `k_means.py` and `clustering/k_means.py` - K-Means helper functions.
-- `data_model.py` - engineering target/range definitions for synthetic data.
-- `streamlit_flow/` - local Streamlit flow component code and frontend build.
-
-## Dependencies
-
-This project now supports a `uv` workflow for local development while keeping `requirements.txt` for Streamlit-friendly deployment.
-
-Recommended local setup:
+This project uses `uv` for reproducible local development.
 
 ```bash
 uv sync
 uv run streamlit run app/streamlit_app.py
 ```
 
-Run tests from the locked environment:
-
-```bash
-UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
-```
-
-Fallback setup:
+Fallback setup for environments that install from `requirements.txt`:
 
 ```bash
 python3 -m pip install -r requirements.txt
 python3 -m streamlit run app/streamlit_app.py
 ```
 
-System package note: `packages.txt` currently declares `graphviz`, which is needed by Graphviz-related tree visualization workflows in deployed environments.
+System dependency note: `packages.txt` declares `graphviz` for Graphviz-backed tree visualization workflows in deployed environments.
 
-For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`. For deployment instructions, see `docs/deployment.md`. For release checks, see `docs/release_verification.md` and `docs/portfolio_release.md`. For model artifact refresh policy, see `docs/model_artifacts.md`. For the phased cleanup plan, see `docs/roadmap.md`.
+## Quality Gate
+
+Run the release gate before changing model, data, or Streamlit workflow behavior:
+
+```bash
+UV_CACHE_DIR=.uv-cache uv lock --check
+UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
+UV_CACHE_DIR=.uv-cache uv run --python 3.12 python -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files
+git diff --check
+```
+
+The same baseline is enforced in `.github/workflows/ci.yml`.
 
 ## Deployment
 
-The deployment-ready entry point is:
+Streamlit Community Cloud should use:
 
-```bash
-streamlit run app/streamlit_app.py
-```
+- Repository: `VachanaVisweswaraiah/ai-stator-inspection`
+- Branch: `main`
+- Main file path: `app/streamlit_app.py`
+- Python version: `3.12`
+- Python dependencies: `requirements.txt`
+- System packages: `packages.txt`
+- Streamlit config: `.streamlit/config.toml`
 
-Streamlit Cloud should use `main` as the branch and `app/streamlit_app.py` as the main file path. System packages are listed in `packages.txt`, and Streamlit defaults are committed in `.streamlit/config.toml`.
+The deployed app is available at https://ai-stator-inspection.streamlit.app/.
 
-The deployed portfolio app is available at https://ai-stator-inspection.streamlit.app/.
+## Optional Secrets
 
-## Secrets
-
-The AI analysis feature expects a Streamlit secret named:
+The AI analysis feature expects this Streamlit secret:
 
 ```toml
 [api_keys]
@@ -101,41 +117,18 @@ gemini = "your-api-key"
 
 For local development, place this in `.streamlit/secrets.toml`. That file is intentionally ignored by Git.
 
-## Quality Checks
+## Project Documentation
 
-Run the baseline verification suite before changing model, data, or Streamlit workflow code:
+- `docs/architecture.md` - module boundaries and runtime structure.
+- `docs/reproducibility.md` - dependency and verification contract.
+- `docs/deployment.md` - Streamlit Cloud deployment settings.
+- `docs/release_verification.md` - release and hosted-app verification steps.
+- `docs/portfolio_release.md` - final portfolio presentation checklist.
+- `docs/model_artifacts.md` - model artifact registry and refresh policy.
+- `docs/roadmap.md` - completed cleanup phases and remaining technical debt.
 
-```bash
-python3 -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files
-UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
-git diff --check
-```
+## Current Technical Notes
 
-Manual Streamlit verification:
-
-```bash
-streamlit run app/streamlit_app.py
-```
-
-The same baseline is also enforced in `.github/workflows/ci.yml`. The final portfolio release checklist is documented in `docs/portfolio_release.md`.
-
-Current engineering observations:
-
-- `main.py` is the real full app entry point.
-- `app.py` imports successfully and appears to be a smaller legacy version.
-- `main.py` imports successfully once declared dependencies are installed.
-- Model training and data generation are isolated behind function calls instead of running during module import.
-- Matplotlib may warn about cache directories when the home cache path is not writable.
-- Saved `.joblib` model artifacts currently load successfully, but may emit a scikit-learn version compatibility warning until the artifacts are refreshed with the active locked runtime.
-- A real Streamlit browser session is still the best way to verify every tab and interaction.
-
-## Development Roadmap
-
-The application will evolve in focused phases to keep functionality stable while improving engineering quality:
-
-1. Establish automated baseline verification.
-2. Organize datasets, models, generated outputs, and project assets.
-3. Modularize the app without changing behavior.
-4. Add tests for data processing, modeling helpers, and smoke imports.
-5. Polish the UI and project presentation.
-6. Deploy the Streamlit app from the cleaned GitHub repository.
+- Saved `.joblib` model artifacts load successfully, but some were serialized with an older scikit-learn version and may emit compatibility warnings under the locked runtime.
+- Model artifact refreshes should be handled as an intentional future phase because refreshed models may change predictions or metrics.
+- Root-level compatibility modules remain while the app continues moving toward the structured `app/` and `src/` architecture.
