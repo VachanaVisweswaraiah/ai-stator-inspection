@@ -898,7 +898,7 @@ def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
             st.markdown('---')
             st.markdown("### 💬 Expert Insights")
             with st.expander("💬 Domain Hypothesis", expanded=True):
-                with st.form(key="domain_hypothesis_form_dt"):
+                with st.form(key="domain_hypothesis_form_dt_vw_sample"):
                     st.markdown("### 📌 Domain Hypothesis Entry")
 
                     failure_description = st.text_area(
@@ -925,7 +925,7 @@ def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
                             "🔮 How likely is this hypothesis?",
                             options=["High", "Medium", "Low"],
                             index=["High", "Medium", "Low"].index(form_defaults["hypo_prob"]),
-                            key="hypo_prob_dt"
+                            key="hypo_prob_dt_vw_sample"
                         )
 
                     with col2:
@@ -933,7 +933,7 @@ def vw_sample_probabilistic_decision_tree_viz(depth,selected_to_drop):
                             "🔥 How important is this failure?",
                             options=["High", "Medium", "Low"],
                             index=["High", "Medium", "Low"].index(form_defaults["fail_imp"]),
-                            key="fail_imp_dt"
+                            key="fail_imp_dt_vw_sample"
                         )
 
                     col1, col2 = st.columns(2)

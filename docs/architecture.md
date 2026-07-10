@@ -37,3 +37,5 @@ Primary app modules import engineering and clustering helpers through `src.featu
 Shared Streamlit rendering for optional AI analysis lives in `app/ai_analysis.py`. Missing hosted secrets are handled as a disabled optional capability instead of an application failure.
 
 Decision-tree serialization and Excel download generation are shared through `src.visualization`, with dataset-specific preparation and class labels supplied by the calling workflow.
+
+Interactive Streamlit state is namespaced by workflow. Decision-tree expert-insight forms use workflow-specific hypothesis lists, reset flags, form keys, and field keys so navigating between pages does not reuse stale form state from another workflow.

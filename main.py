@@ -51,6 +51,28 @@ import json as json_lib
 
 configure_page()
 
+DT_HYPOTHESES_KEY = "submitted_hypotheses_dt"
+DT_RESET_KEY = "reset_form_dt"
+DT_FORM_KEY = "domain_hypothesis_form_dt"
+DT_FIELD_KEYS = {
+    "failure_desc": "failure_desc_dt",
+    "imp_params": "imp_params_dt",
+    "failure_name": "failure_name_dt",
+    "hypo_prob": "hypo_prob_dt",
+    "fail_imp": "fail_imp_dt",
+}
+
+PDT_HYPOTHESES_KEY = "submitted_hypotheses_pdt"
+PDT_RESET_KEY = "reset_form_pdt"
+PDT_FORM_KEY = "domain_hypothesis_form_pdt"
+PDT_FIELD_KEYS = {
+    "failure_desc": "failure_desc_pdt",
+    "imp_params": "imp_params_pdt",
+    "failure_name": "failure_name_pdt",
+    "hypo_prob": "hypo_prob_pdt",
+    "fail_imp": "fail_imp_pdt",
+}
+
 def color_code(val):
     if val == 'OK':
         color = 'rgba(0, 255, 0, 0.3)'
@@ -1119,7 +1141,7 @@ def decision_tree_viz(depth):
                         G.add_node(node_id, label=label)
                     
                     # Log debug info to help diagnose
-                    st.session_state['node_debug_info'] = node_debug_info
+                    st.session_state['node_debug_info_dt'] = node_debug_info
                     
                     # Add edges
                     for edge in st.session_state.canvas_state_dt.edges:
@@ -1250,49 +1272,21 @@ def decision_tree_viz(depth):
                     mime="image/png"
                 )
             
-        # Initialize hypothesis state
-        if "submitted_hypotheses" not in st.session_state:
-            st.session_state["submitted_hypotheses"] = []
-        
-        # Initialize a reset flag
-        if "reset_form_dt" not in st.session_state:
-            st.session_state["reset_form_dt"] = False
-            
-        # Initialize default values for form fields
-        if "reset_form_dt" in st.session_state and st.session_state["reset_form_dt"]:
-            form_defaults = {
-                "failure_desc": "",
-                "imp_params": [],
-                "failure_name": "",
-                "hypo_prob": "Medium",
-                "fail_imp": "Medium"
-            }
-            # Reset the flag
-            st.session_state["reset_form_dt"] = False
-        else:
-            form_defaults = {
-                "failure_desc": st.session_state.get("failure_desc_dt", ""),
-                "imp_params": st.session_state.get("imp_params_dt", []),
-                "failure_name": st.session_state.get("failure_name_dt", ""),
-                "hypo_prob": st.session_state.get("hypo_prob_dt", "Medium"),
-                "fail_imp": st.session_state.get("fail_imp_dt", "Medium")
-            }
-
         # Expert Insights Section
         st.markdown("---")
         st.markdown("### 💬 Expert Insights")
         st.markdown('<div id="hypothesis-form-anchor"></div>', unsafe_allow_html=True)
 
         # Initialize hypothesis state
-        if "submitted_hypotheses" not in st.session_state:
-            st.session_state["submitted_hypotheses"] = []
+        if DT_HYPOTHESES_KEY not in st.session_state:
+            st.session_state[DT_HYPOTHESES_KEY] = []
         
         # Initialize a reset flag
-        if "reset_form_dt" not in st.session_state:
-            st.session_state["reset_form_dt"] = False
+        if DT_RESET_KEY not in st.session_state:
+            st.session_state[DT_RESET_KEY] = False
             
         # Initialize default values for form fields
-        if "reset_form_dt" in st.session_state and st.session_state["reset_form_dt"]:
+        if DT_RESET_KEY in st.session_state and st.session_state[DT_RESET_KEY]:
             form_defaults = {
                 "failure_desc": "",
                 "imp_params": [],
@@ -1301,39 +1295,39 @@ def decision_tree_viz(depth):
                 "fail_imp": "Medium"
             }
             # Reset the flag
-            st.session_state["reset_form_dt"] = False
+            st.session_state[DT_RESET_KEY] = False
         else:
             form_defaults = {
-                "failure_desc": st.session_state.get("failure_desc_dt", ""),
-                "imp_params": st.session_state.get("imp_params_dt", []),
-                "failure_name": st.session_state.get("failure_name_dt", ""),
-                "hypo_prob": st.session_state.get("hypo_prob_dt", "Medium"),
-                "fail_imp": st.session_state.get("fail_imp_dt", "Medium")
+                "failure_desc": st.session_state.get(DT_FIELD_KEYS["failure_desc"], ""),
+                "imp_params": st.session_state.get(DT_FIELD_KEYS["imp_params"], []),
+                "failure_name": st.session_state.get(DT_FIELD_KEYS["failure_name"], ""),
+                "hypo_prob": st.session_state.get(DT_FIELD_KEYS["hypo_prob"], "Medium"),
+                "fail_imp": st.session_state.get(DT_FIELD_KEYS["fail_imp"], "Medium")
             }
 
         # Domain Hypothesis Form
         with st.container():
             with st.expander("💬 Domain Hypothesis", expanded=True):
-                with st.form(key="domain_hypothesis_form_dt"):
+                with st.form(key=DT_FORM_KEY):
                     st.markdown("### 📌 Domain Hypothesis Entry")
 
                     failure_description = st.text_area(
                         "📝 Describe the failure case", 
                         value=form_defaults["failure_desc"],
-                        key="failure_desc_dt"
+                        key=DT_FIELD_KEYS["failure_desc"]
                     )
 
                     important_parameters = st.multiselect(
                         "📊 Which parameters are most important?",
                         options=["Box Hole Diameter", "Box Hole Depth", "Cylinder Diameter", "Cylinder Height", "Other"],
                         default=form_defaults["imp_params"],
-                        key="imp_params_dt"
+                        key=DT_FIELD_KEYS["imp_params"]
                     )
 
                     failure_name = st.text_input(
                         "❗ Name this failure (e.g., 'Exploded Weld')", 
                         value=form_defaults["failure_name"],
-                        key="failure_name_dt"
+                        key=DT_FIELD_KEYS["failure_name"]
                     )
 
                     col1, col2 = st.columns(2)
@@ -1342,7 +1336,7 @@ def decision_tree_viz(depth):
                             "🔮 How likely is this hypothesis?",
                             options=["High", "Medium", "Low"],
                             index=["High", "Medium", "Low"].index(form_defaults["hypo_prob"]),
-                            key="hypo_prob_dt"
+                            key=DT_FIELD_KEYS["hypo_prob"]
                         )
 
                     with col2:
@@ -1350,7 +1344,7 @@ def decision_tree_viz(depth):
                             "🔥 How important is this failure?",
                             options=["High", "Medium", "Low"],
                             index=["High", "Medium", "Low"].index(form_defaults["fail_imp"]),
-                            key="fail_imp_dt"
+                            key=DT_FIELD_KEYS["fail_imp"]
                         )
 
                     col1, col2 = st.columns(2)
@@ -1375,7 +1369,7 @@ def decision_tree_viz(depth):
                                 "Failure Importance": failure_importance,
                                 "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                             }
-                            st.session_state["submitted_hypotheses"].append(entry)
+                            st.session_state[DT_HYPOTHESES_KEY].append(entry)
                             st.success("✅ Hypothesis submitted successfully!")
 
                             st.markdown("#### 🧾 Summary of Hypothesis")
@@ -1386,16 +1380,16 @@ def decision_tree_viz(depth):
                     # Handle form clearing
                     if clear_form:
                         # Set the reset flag for the next rerun
-                        st.session_state["reset_form_dt"] = True
+                        st.session_state[DT_RESET_KEY] = True
                         st.rerun()
 
         # Display and export submitted hypotheses
-        if st.session_state["submitted_hypotheses"]:
+        if st.session_state[DT_HYPOTHESES_KEY]:
             with st.expander("View All Submitted Hypotheses", expanded=False):
-                df_hypo = pd.DataFrame(st.session_state["submitted_hypotheses"])
+                df_hypo = pd.DataFrame(st.session_state[DT_HYPOTHESES_KEY])
                 st.dataframe(df_hypo)
                 
-            csv_data = pd.DataFrame(st.session_state["submitted_hypotheses"]).to_csv(index=False).encode("utf-8")
+            csv_data = pd.DataFrame(st.session_state[DT_HYPOTHESES_KEY]).to_csv(index=False).encode("utf-8")
             st.download_button(
                 label="💾 Download Hypotheses as CSV",
                 data=csv_data,
@@ -1992,7 +1986,7 @@ def probabilistic_decision_tree_viz(depth):
                         G.add_node(node_id, label=label)
                     
                     # Log debug info to help diagnose
-                    st.session_state['node_debug_info'] = node_debug_info
+                    st.session_state['node_debug_info_pdt'] = node_debug_info
                     
                     # Add edges
                     for edge in st.session_state.canvas_state_pdt.edges:
@@ -2127,15 +2121,15 @@ def probabilistic_decision_tree_viz(depth):
         st.markdown("### 💬 Expert Insights")
 
         # Initialize hypothesis state
-        if "submitted_hypotheses" not in st.session_state:
-            st.session_state["submitted_hypotheses"] = []
+        if PDT_HYPOTHESES_KEY not in st.session_state:
+            st.session_state[PDT_HYPOTHESES_KEY] = []
         
         # Initialize a reset flag
-        if "reset_form_dt" not in st.session_state:
-            st.session_state["reset_form_dt"] = False
+        if PDT_RESET_KEY not in st.session_state:
+            st.session_state[PDT_RESET_KEY] = False
             
         # Initialize default values for form fields
-        if "reset_form_dt" in st.session_state and st.session_state["reset_form_dt"]:
+        if PDT_RESET_KEY in st.session_state and st.session_state[PDT_RESET_KEY]:
             form_defaults = {
                 "failure_desc": "",
                 "imp_params": [],
@@ -2144,38 +2138,38 @@ def probabilistic_decision_tree_viz(depth):
                 "fail_imp": "Medium"
             }
             # Reset the flag
-            st.session_state["reset_form_dt"] = False
+            st.session_state[PDT_RESET_KEY] = False
         else:
             form_defaults = {
-                "failure_desc": st.session_state.get("failure_desc_dt", ""),
-                "imp_params": st.session_state.get("imp_params_dt", []),
-                "failure_name": st.session_state.get("failure_name_dt", ""),
-                "hypo_prob": st.session_state.get("hypo_prob_dt", "Medium"),
-                "fail_imp": st.session_state.get("fail_imp_dt", "Medium")
+                "failure_desc": st.session_state.get(PDT_FIELD_KEYS["failure_desc"], ""),
+                "imp_params": st.session_state.get(PDT_FIELD_KEYS["imp_params"], []),
+                "failure_name": st.session_state.get(PDT_FIELD_KEYS["failure_name"], ""),
+                "hypo_prob": st.session_state.get(PDT_FIELD_KEYS["hypo_prob"], "Medium"),
+                "fail_imp": st.session_state.get(PDT_FIELD_KEYS["fail_imp"], "Medium")
             }
         # Domain Hypothesis Form
         with st.container():
             with st.expander("💬 Domain Hypothesis", expanded=True):
-                with st.form(key="domain_hypothesis_form_dt"):
+                with st.form(key=PDT_FORM_KEY):
                     st.markdown("### 📌 Domain Hypothesis Entry")
 
                     failure_description = st.text_area(
                         "📝 Describe the failure case", 
                         value=form_defaults["failure_desc"],
-                        key="failure_desc_dt"
+                        key=PDT_FIELD_KEYS["failure_desc"]
                     )
 
                     important_parameters = st.multiselect(
                         "📊 Which parameters are most important?",
                         options=["Box Hole Diameter", "Box Hole Depth", "Cylinder Diameter", "Cylinder Height", "Other"],
                         default=form_defaults["imp_params"],
-                        key="imp_params_dt"
+                        key=PDT_FIELD_KEYS["imp_params"]
                     )
 
                     failure_name = st.text_input(
                         "❗ Name this failure (e.g., 'Exploded Weld')", 
                         value=form_defaults["failure_name"],
-                        key="failure_name_dt"
+                        key=PDT_FIELD_KEYS["failure_name"]
                     )
 
                     col1, col2 = st.columns(2)
@@ -2184,7 +2178,7 @@ def probabilistic_decision_tree_viz(depth):
                             "🔮 How likely is this hypothesis?",
                             options=["High", "Medium", "Low"],
                             index=["High", "Medium", "Low"].index(form_defaults["hypo_prob"]),
-                            key="hypo_prob_dt"
+                            key=PDT_FIELD_KEYS["hypo_prob"]
                         )
 
                     with col2:
@@ -2192,7 +2186,7 @@ def probabilistic_decision_tree_viz(depth):
                             "🔥 How important is this failure?",
                             options=["High", "Medium", "Low"],
                             index=["High", "Medium", "Low"].index(form_defaults["fail_imp"]),
-                            key="fail_imp_dt"
+                            key=PDT_FIELD_KEYS["fail_imp"]
                         )
 
                     col1, col2 = st.columns(2)
@@ -2217,7 +2211,7 @@ def probabilistic_decision_tree_viz(depth):
                                 "Failure Importance": failure_importance,
                                 "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                             }
-                            st.session_state["submitted_hypotheses"].append(entry)
+                            st.session_state[PDT_HYPOTHESES_KEY].append(entry)
                             st.success("✅ Hypothesis submitted successfully!")
 
                             st.markdown("#### 🧾 Summary of Hypothesis")
@@ -2228,16 +2222,16 @@ def probabilistic_decision_tree_viz(depth):
                     # Handle form clearing
                     if clear_form:
                         # Set the reset flag for the next rerun
-                        st.session_state["reset_form_dt"] = True
+                        st.session_state[PDT_RESET_KEY] = True
                         st.rerun()
 
         # Display and export submitted hypotheses
-        if st.session_state["submitted_hypotheses"]:
+        if st.session_state[PDT_HYPOTHESES_KEY]:
             with st.expander("View All Submitted Hypotheses", expanded=False):
-                df_hypo = pd.DataFrame(st.session_state["submitted_hypotheses"])
+                df_hypo = pd.DataFrame(st.session_state[PDT_HYPOTHESES_KEY])
                 st.dataframe(df_hypo)
                 
-            csv_data = pd.DataFrame(st.session_state["submitted_hypotheses"]).to_csv(index=False).encode("utf-8")
+            csv_data = pd.DataFrame(st.session_state[PDT_HYPOTHESES_KEY]).to_csv(index=False).encode("utf-8")
             st.download_button(
                 label="💾 Download Hypotheses as CSV",
                 data=csv_data,

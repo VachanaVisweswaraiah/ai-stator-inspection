@@ -28,6 +28,7 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 22. Centralized optional Gemini tree analysis behind a tested service layer.
 23. Extracted shared decision-tree serialization and Excel export helpers.
 24. Split the seven navigation workflows into dedicated page controllers.
+25. Isolated Streamlit session-state keys across decision-tree workflows.
 
 ## Remaining Work
 

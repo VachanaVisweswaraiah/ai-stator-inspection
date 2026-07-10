@@ -834,7 +834,7 @@ def iris_probabilistic_decision_tree_viz(depth):
             st.markdown('---')
             st.markdown("### 💬 Expert Insights")
             with st.expander("💬 Domain Hypothesis", expanded=True):
-                with st.form(key="domain_hypothesis_form_dt"):
+                with st.form(key="domain_hypothesis_form_dt_iris"):
                     st.markdown("### 📌 Domain Hypothesis Entry")
 
                     failure_description = st.text_area(
@@ -862,7 +862,7 @@ def iris_probabilistic_decision_tree_viz(depth):
                             "🔮 How likely is this hypothesis?",
                             options=["High", "Medium", "Low"],
                             index=["High", "Medium", "Low"].index(form_defaults["hypo_prob"]),
-                            key="hypo_prob_dt"
+                            key="hypo_prob_dt_iris"
                         )
 
                     with col2:
@@ -870,7 +870,7 @@ def iris_probabilistic_decision_tree_viz(depth):
                             "🔥 How important is this failure?",
                             options=["High", "Medium", "Low"],
                             index=["High", "Medium", "Low"].index(form_defaults["fail_imp"]),
-                            key="fail_imp_dt"
+                            key="fail_imp_dt_iris"
                         )
 
                     col1, col2 = st.columns(2)
