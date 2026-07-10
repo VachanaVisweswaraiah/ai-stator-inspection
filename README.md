@@ -6,6 +6,8 @@ Live app: https://ai-stator-inspection.streamlit.app/
 
 Repository: https://github.com/VachanaVisweswaraiah/ai-stator-inspection
 
+Presentation materials: https://drive.google.com/drive/folders/1rEl3tcPdDUH7BGAQLuHMXQpM-KajDp8z?usp=sharing
+
 ## Project Context
 
 This application was developed as part of a master's project focused on manufacturing analytics, including a Volkswagen Group sample-data workflow for probabilistic decision-tree inspection. The public repository presents the project as a cleaned, reproducible, portfolio-ready ML application while preserving the original app functionality.
