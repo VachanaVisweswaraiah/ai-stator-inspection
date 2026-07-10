@@ -35,3 +35,6 @@ jobs:
 
       - name: Compile Python modules
         run: uv run python -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files
+
+      - name: Check whitespace
+        run: git diff --check

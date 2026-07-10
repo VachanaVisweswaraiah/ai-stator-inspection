@@ -35,6 +35,7 @@ Run the verification suite:
 ```bash
 UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
 python3 -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files
+git diff --check
 ```
 
 ## Continuous Integration
@@ -45,6 +46,7 @@ GitHub Actions runs the same baseline checks on pushes to `main` and on pull req
 - `uv sync --locked`
 - `UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest`
 - `uv run python -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files`
+- `git diff --check`
 
 ## Deployment Setup
 
@@ -78,3 +80,5 @@ Current verification loads these artifacts successfully with the locked runtime.
 Future model-refresh work should retrain and reserialize all committed model artifacts with the active locked scikit-learn version, then update the verification suite against the refreshed artifacts.
 
 See `docs/model_artifacts.md` for the current artifact registry and refresh policy.
+
+See `docs/portfolio_release.md` for the final presentation checklist and release gate.

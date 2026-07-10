@@ -28,6 +28,7 @@ def test_deployment_docs_define_streamlit_cloud_entry_point():
 
     assert "docs/deployment.md" in readme
     assert "app/streamlit_app.py" in readme
+    assert "https://ai-stator-inspection.streamlit.app/" in readme
 
 
 def test_deployment_system_packages_include_graphviz():

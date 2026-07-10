@@ -31,10 +31,11 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 25. Isolated Streamlit session-state keys across decision-tree workflows.
 26. Added end-to-end Streamlit workflow smoke tests for every navigation page.
 27. Organized committed runtime datasets and model/image artifacts into dedicated asset folders.
+28. Added final portfolio release checklist and CI parity for the local quality gate.
 
 ## Remaining Work
 
 - Refresh saved `.joblib` model artifacts with the active locked scikit-learn version after prediction changes are reviewed and accepted.
-- Create the Streamlit Cloud app from `app/streamlit_app.py` and add the optional AI secret in the hosted app settings.
+- Add the optional AI secret in the hosted Streamlit app settings when AI analysis should be enabled.
 
 Each phase should stay small enough to review, run the verification suite, and commit independently.

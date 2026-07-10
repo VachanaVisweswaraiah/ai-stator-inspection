@@ -11,6 +11,7 @@ Run the complete release gate from the repository root:
 UV_CACHE_DIR=.uv-cache uv lock --check
 UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
 UV_CACHE_DIR=.uv-cache uv run --python 3.12 python -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files
+git diff --check
 ```
 
 The test suite verifies:
@@ -21,6 +22,7 @@ The test suite verifies:
 - legacy compatibility imports;
 - Streamlit navigation and shared UI configuration;
 - execution of `app/streamlit_app.py` through Streamlit's testing runtime.
+- whitespace checks that prevent accidental trailing-space or conflict-marker commits.
 
 ## Known Warnings
 

@@ -14,6 +14,7 @@ def test_github_actions_quality_workflow_exists():
         "uv sync --locked",
         "UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest",
         "uv run python -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files",
+        "git diff --check",
     ]
 
     for fragment in expected_fragments:

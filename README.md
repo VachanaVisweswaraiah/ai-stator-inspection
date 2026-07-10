@@ -6,6 +6,8 @@ The project is being developed as a portfolio-grade ML application with reproduc
 
 Automated quality checks run through GitHub Actions on pushes and pull requests.
 
+Live app: https://ai-stator-inspection.streamlit.app/
+
 ## Current App Entry Point
 
 The preferred Streamlit app entry point is:
@@ -74,7 +76,7 @@ python3 -m streamlit run app/streamlit_app.py
 
 System package note: `packages.txt` currently declares `graphviz`, which is needed by Graphviz-related tree visualization workflows in deployed environments.
 
-For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`. For deployment instructions, see `docs/deployment.md`. For release checks, see `docs/release_verification.md`. For model artifact refresh policy, see `docs/model_artifacts.md`. For the phased cleanup plan, see `docs/roadmap.md`.
+For the full reproducibility contract, including model artifact compatibility notes, see `docs/reproducibility.md`. For deployment instructions, see `docs/deployment.md`. For release checks, see `docs/release_verification.md` and `docs/portfolio_release.md`. For model artifact refresh policy, see `docs/model_artifacts.md`. For the phased cleanup plan, see `docs/roadmap.md`.
 
 ## Deployment
 
@@ -85,6 +87,8 @@ streamlit run app/streamlit_app.py
 ```
 
 Streamlit Cloud should use `main` as the branch and `app/streamlit_app.py` as the main file path. System packages are listed in `packages.txt`, and Streamlit defaults are committed in `.streamlit/config.toml`.
+
+The deployed portfolio app is available at https://ai-stator-inspection.streamlit.app/.
 
 ## Secrets
 
@@ -104,6 +108,7 @@ Run the baseline verification suite before changing model, data, or Streamlit wo
 ```bash
 python3 -m compileall -q *.py app src clustering streamlit_flow tests ML_Dash_files
 UV_CACHE_DIR=.uv-cache uv run --python 3.12 pytest
+git diff --check
 ```
 
 Manual Streamlit verification:
@@ -112,7 +117,7 @@ Manual Streamlit verification:
 streamlit run app/streamlit_app.py
 ```
 
-The same baseline is also enforced in `.github/workflows/ci.yml`.
+The same baseline is also enforced in `.github/workflows/ci.yml`. The final portfolio release checklist is documented in `docs/portfolio_release.md`.
 
 Current engineering observations:
 
