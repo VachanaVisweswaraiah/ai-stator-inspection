@@ -6,8 +6,9 @@ PMV4 Analytics is organized around a Streamlit application layer and a gradually
 
 - `app/streamlit_app.py` is the preferred Streamlit entry point for deployment.
 - `app/navigation.py` owns the sidebar navigation contract.
+- `app/pages/` contains one controller for each navigable workflow.
 - `app/ui.py` owns shared page configuration and heading primitives.
-- `main.py` remains available for backward-compatible local execution while functionality is migrated into `src/`.
+- `main.py` remains available for backward-compatible local execution and supplies existing visualization callbacks to the page controllers.
 
 ## Target Module Boundaries
 
@@ -20,6 +21,8 @@ PMV4 Analytics is organized around a Streamlit application layer and a gradually
 - `src/services/tree_analysis.py` owns Gemini-compatible decision-tree analysis without depending on Streamlit.
 
 The migration is intentionally incremental so that each refactor can be tested without changing user-facing functionality.
+
+Page controllers own dataset presentation, controls, and workflow composition. They do not import `main.py`; synthetic-data pages receive existing callbacks from the coordinator, while dataset-specific pages import their workflows locally to avoid circular dependencies.
 
 ## Path Handling
 

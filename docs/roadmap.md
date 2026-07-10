@@ -27,6 +27,7 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 21. Separated interactive model training from explicit artifact persistence.
 22. Centralized optional Gemini tree analysis behind a tested service layer.
 23. Extracted shared decision-tree serialization and Excel export helpers.
+24. Split the seven navigation workflows into dedicated page controllers.
 
 ## Remaining Work
 

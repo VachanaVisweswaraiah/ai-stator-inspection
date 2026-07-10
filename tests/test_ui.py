@@ -27,9 +27,15 @@ def test_page_title_uses_native_streamlit_heading(monkeypatch):
     assert captured == ["IRIS Dataset Analysis"]
 
 
-def test_primary_app_uses_shared_ui_primitives():
-    source = (PROJECT_ROOT / "main.py").read_text()
+def test_page_controllers_use_shared_ui_primitives():
+    page_sources = [
+        path.read_text()
+        for path in (PROJECT_ROOT / "app" / "pages").glob("*.py")
+    ]
+    source = "\n".join(page_sources)
 
-    assert "configure_page()" in source
     assert source.count("render_page_title(") == 7
     assert 'style="text-align: center;"' not in source
+
+    main_source = (PROJECT_ROOT / "main.py").read_text()
+    assert "configure_page()" in main_source

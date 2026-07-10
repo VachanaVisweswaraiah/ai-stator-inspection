@@ -8,25 +8,31 @@ import plotly.express as px
 from sklearn.cluster import KMeans, DBSCAN
 from app.ai_analysis import render_tree_analysis
 from app.navigation import select_section
-from app.ui import configure_page, render_page_title
+from app.pages.clustering import render as render_clustering_page
+from app.pages.data_understanding import (
+    render as render_data_understanding_page,
+)
+from app.pages.decision_tree import (
+    render as render_decision_tree_page,
+)
+from app.pages.iris import render as render_iris_page
+from app.pages.probabilistic_tree import (
+    render as render_probabilistic_tree_page,
+)
+from app.pages.steel_faults import render as render_steel_faults_page
+from app.pages.volkswagen import render as render_volkswagen_page
+from app.ui import configure_page
 from src.data.loaders import (
     load_engineering_data,
     load_fake_data,
     load_pdt_predicted_data,
     load_predicted_data,
-    load_vw_sample_data,
 )
 from src.features.clustering import perform_kmeans
 from src.features.engineering import compute_fit, count_yes_no, data_model
 from src.models.workflows import (
     Decision_Tress,
     Probabilistic_Decision_Tree,
-    Probabilistic_Decision_Tree_Iris,
-    Probabilistic_Decision_Tree_Steel_Faults,
-    Probabilistic_Decision_Tree_VW_Sample,
-    df_fitting_and_evaluation_iris,
-    df_fitting_and_evaluation_steel_faults,
-    df_fitting_and_evaluation_vw_sample,
 )
 from src.models.artifacts import (
     load_decision_tree_model,
@@ -2292,121 +2298,37 @@ def get_table_download_link():
 def main():
     selected_section = select_section()
 
-    # Display content based on the selected section
-    if selected_section == 'Bar-Chart':
+    if selected_section == "Bar-Chart":
         df_bar_chart_Evaluation()
         df_bar_chart_fitting_group()
+        return
 
-    elif selected_section == 'Data Understanding':
-        render_page_title("Box and Cylinder Analysis")
-        st.header('Synthetic Dataset')
-        main_df, df1 = df_fitting_and_evaluation()
-        main_df.drop(columns=['fitting_distance','Prediction', 'Evaluation','fitting_group'], inplace=True)
-        st.dataframe(main_df, hide_index=True, width=1250)
-        st.header('Box-Cylinder Model Range ')
-        df_engineering_data_from_xlsx = load_engineering_data()
-        st.dataframe(df_engineering_data_from_xlsx, hide_index=True)
-        tab1, tab2 = st.tabs(["Box-Plot", "Scatter-Plot"])
-        with tab1:
-            st.header("Box-Plot")
-            box_plot()
-        with tab2:
-            st.header("Scatter-Plot")
-            scatter_plot()
-
-    elif selected_section == 'k-means':
-        render_page_title("Box and Cylinder Analysis")
-        kmeans_info_popover()
-        fitting_group_visualisation()
-        #fitting_group_visualisation_dbscan()
-        kmeans()
-
-    elif selected_section == 'Decision Tree':
-        render_page_title("Box and Cylinder Analysis")
-        st.header("Predictions for Synthetic Dataset")
-        main_df, df1 = df_fitting_and_evaluation()
-        st.dataframe(df1,hide_index=True,width=1250)
-        depth = st.slider("Select the Depth of the Decision Tree", min_value=1, max_value=6, value=4, step=1)
-        decision_tree_viz(depth)
-    
-    elif selected_section == 'Probabilistic Decision Tree':
-        render_page_title("Box and Cylinder Analysis")
-        st.header("Predictions for Synthetic Dataset")
-        main_df, df1 = df_fitting_and_evaluation_PDT()
-        st.dataframe(df1,hide_index=True,width=1250)
-        depth = st.slider("Select the Depth of the Probabilistic Tree", min_value=1, max_value=6, value=4, step=1)
-        probabilistic_decision_tree_viz(depth)
-    
-    elif selected_section == 'Iris PDT':
-        render_page_title("IRIS Dataset Analysis")
-        st.header("Iris Dataset")
-        df1 = df_fitting_and_evaluation_iris()
-        st.dataframe(df1,hide_index=True,width=1250)
-        depth = st.slider("Select the Depth of the Probabilistic Tree for Iris dataset", min_value=1, max_value=6, value=4, step=1)
-        #probabilistic_decision_tree_viz(depth)
-        from iris_viz import iris_probabilistic_decision_tree_viz
-        iris_probabilistic_decision_tree_viz(depth)
-
-    elif selected_section == 'Steel Faults PDT':
-        render_page_title("Steel Faults Dataset Analysis")
-        st.header("Steel Faults Dataset")
-        df1 = df_fitting_and_evaluation_steel_faults()
-        st.dataframe(df1,hide_index=True,width=1250)
-        depth = st.slider("Select the Depth of the Probabilistic Tree for steel faults dataset", min_value=1, max_value=30, value=20, step=1)
-        #probabilistic_decision_tree_viz(depth)
-        from steel_faults_viz import steel_faults_probabilistic_decision_tree_viz
-        steel_faults_probabilistic_decision_tree_viz(depth)
-    
-    elif selected_section == 'Volkswagen PDT':
-        df_actual = load_vw_sample_data()
-        df_actual = df_actual.drop(columns=['pin_position','stator_id','ProduktID', 'Pinbezeichnung','left_pin_id', 'right_pin_id','Drahtprüfung_Ergebnis_x', 'Pin_ID_x','Dachbiegen_Ergebnis_x', 'Pin_Type_x', '3D_Biegen_Ergebnis_x',
-       'Abisolieren_eval_x', 'Drahtprüfung_Ergebnis_y', 'Pin_ID_y',
-       'Dachbiegen_Ergebnis_y', 'Pin_Type_y', '3D_Biegen_Ergebnis_y', 'Ergebnis'])
-        render_page_title("Volkswagen Dataset Analysis")
-        st.header("Volkswagen Dataset")
-        df1 = df_fitting_and_evaluation_vw_sample()
-        st.dataframe(df1,hide_index=True,width=1250)
-        depth = st.slider("Select the Depth of the Probabilistic Tree for VW Sample dataset", min_value=1, max_value=10, value=5, step=1)
-
-        if "vw_applied_drop" not in st.session_state:
-            st.session_state.vw_applied_drop = ['Abstand_Pins_vertikal']  # nothing dropped initially
-        if "vw_drop" not in st.session_state:
-            st.session_state.vw_drop = ['Abstand_Pins_vertikal']  # default drop features
-
-        options = df_actual.columns.tolist()
-        selected_to_drop = st.multiselect("Choose the features to be dropped (Optional)", options, default=st.session_state.vw_drop,key="vw_drop")
-
-        pending_drop = st.session_state.vw_drop        # current UI selection
-        applied_drop = st.session_state.vw_applied_drop
-        show_body = False
-        if pending_drop == applied_drop:
-            # no change pending -> show body
-            show_body = True
-        else:
-            if len(pending_drop) == 0:
-                # user cleared selection -> auto-reset to default and show body
-                st.session_state.vw_applied_drop = []
-                applied_drop = []
-                show_body = True
-            else:
-                st.write("You have selected following features to be dropped:")
-                df = pd.DataFrame(pending_drop, columns=["Features Dropped"])
-                st.dataframe(df, width=200, hide_index=True)
-                # changed to a non-empty selection -> require Update
-                if st.button("Update"):
-                    st.session_state.vw_applied_drop = pending_drop
-                    applied_drop = pending_drop
-                    show_body = True
-        # render body only when allowed
-        if show_body:
-            from vw_sample_data_viz import vw_sample_probabilistic_decision_tree_viz
-            vw_sample_probabilistic_decision_tree_viz(depth, applied_drop)
-
-        #drop_Abstand_Pins_vertikal = st.selectbox("Drop Abstand_Pins_vertikal? ",["Yes", "No"])
-        #probabilistic_decision_tree_viz(depth)
-        #from vw_sample_data_viz import vw_sample_probabilistic_decision_tree_viz
-        #vw_sample_probabilistic_decision_tree_viz(depth,applied_drop)
-    
+    page_renderers = {
+        "Data Understanding": lambda: render_data_understanding_page(
+            df_fitting_and_evaluation,
+            box_plot,
+            scatter_plot,
+        ),
+        "k-means": lambda: render_clustering_page(
+            kmeans_info_popover,
+            fitting_group_visualisation,
+            kmeans,
+        ),
+        "Decision Tree": lambda: render_decision_tree_page(
+            df_fitting_and_evaluation,
+            decision_tree_viz,
+        ),
+        "Probabilistic Decision Tree": lambda: (
+            render_probabilistic_tree_page(
+                df_fitting_and_evaluation_PDT,
+                probabilistic_decision_tree_viz,
+            )
+        ),
+        "Iris PDT": render_iris_page,
+        "Steel Faults PDT": render_steel_faults_page,
+        "Volkswagen PDT": render_volkswagen_page,
+    }
+    page_renderers[selected_section]()
 
 if __name__ == "__main__":
     main()
