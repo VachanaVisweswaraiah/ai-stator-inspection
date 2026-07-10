@@ -30,6 +30,7 @@ This roadmap tracks the cleanup phases used to turn PMV4 Analytics into a portfo
 24. Split the seven navigation workflows into dedicated page controllers.
 25. Isolated Streamlit session-state keys across decision-tree workflows.
 26. Added end-to-end Streamlit workflow smoke tests for every navigation page.
+27. Organized committed runtime datasets and model/image artifacts into dedicated asset folders.
 
 ## Remaining Work
 

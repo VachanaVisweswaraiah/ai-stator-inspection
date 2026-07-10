@@ -30,6 +30,8 @@ Project files are resolved through `src/config/paths.py` instead of relying on t
 
 Runtime modules should use `src.data.loaders` for repository-owned datasets and `src.models.artifacts` for saved model artifacts. User-uploaded files remain handled directly by Streamlit because those paths are supplied at runtime.
 
+Committed runtime datasets live in `data/`. Committed model artifacts live in `artifacts/models/`, and generated reference images live in `artifacts/images/`. New generated outputs should go under ignored generated-output folders unless they are intentionally accepted as governed project artifacts.
+
 Streamlit modules import training and evaluation workflows through `src.models.workflows`. Root-level training modules remain as compatibility entry points.
 
 Primary app modules import engineering and clustering helpers through `src.features`. Root-level feature modules remain as compatibility entry points.
