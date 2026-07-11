@@ -1,16 +1,19 @@
 # PMV4 Analytics
 
-PMV4 Analytics is a deployed Streamlit machine learning dashboard for manufacturing-style process analysis and benchmark classification workflows. It combines data exploration, clustering, decision-tree prediction, probabilistic tree visualization, and optional AI-assisted tree interpretation in one application.
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-Data-150458?logo=pandas&logoColor=white)
+![Graphviz](https://img.shields.io/badge/Graphviz-Visualization-2F7EBD)
+![pytest](https://img.shields.io/badge/pytest-Tested-0A9EDC?logo=pytest&logoColor=white)
+
+Developed in collaboration with Volkswagen Group, PMV4 Analytics is a deployed Streamlit machine learning dashboard for manufacturing-style process analysis and benchmark classification workflows. It combines data exploration, clustering, decision-tree prediction, probabilistic tree visualization, and optional AI-assisted tree interpretation in one application.
 
 Live app: https://ai-stator-inspection.streamlit.app/
 
 Repository: https://github.com/VachanaVisweswaraiah/ai-stator-inspection
 
 Presentation materials: https://drive.google.com/drive/folders/1rEl3tcPdDUH7BGAQLuHMXQpM-KajDp8z?usp=sharing
-
-## Project Context
-
-This application was developed as part of a master's project focused on manufacturing analytics, including a Volkswagen Group sample-data workflow for probabilistic decision-tree inspection. The public repository presents the project as a cleaned, reproducible, portfolio-ready ML application while preserving the original app functionality.
 
 ## Project Highlights
 
